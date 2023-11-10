@@ -1,7 +1,5 @@
------------------------------------------------------------------------------------------
---
--- main.lua
---
------------------------------------------------------------------------------------------
+--Requirements
+local composer = require( "composer" )
 
--- Your code here
+-- Go to the start screen
+composer.gotoScene("src.scene.TitleScreen")
