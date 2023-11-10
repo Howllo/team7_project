@@ -2,16 +2,24 @@
 -- Requirements
 local startUI = require("src.user_interface.start")
 local composer = require( "composer" )
+local display =require("display")
 local scene = composer.newScene()
 
 -- Global Variable
 local start = nil
+local bg = nil
 
 function scene:create( event )
    local sceneGroup = self.view
  
+   -- Background
+   bg = display.newImage(sceneGroup, "data/farback.png", display.contentCenterX, display.contentCenterY)
+
    -- Create Start UI
    start = startUI.new()
+   if start ~= nil then
+      sceneGroup:insert(start:GetGroup())
+   end
 end
  
 -- "scene:show()"
@@ -21,6 +29,7 @@ function scene:show( event )
  
    if ( phase == "will" ) then
    elseif ( phase == "did" ) then
+      
    end
 end
  
