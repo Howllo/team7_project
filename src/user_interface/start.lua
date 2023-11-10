@@ -18,10 +18,6 @@ function Start.new()
 
 --#region Variables
     local group = display.newGroup()
-    
-    -- Background
-    local background = display.newRect( group , display.contentCenterX, display.contentCenterY, display.actualContentWidth, display.actualContentHeight )
-    background:setFillColor(ColConv.HexToNorm("#FF5733"))
 
     -- Credits
     local creditGroup = display.newGroup()
