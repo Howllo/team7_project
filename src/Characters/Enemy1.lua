@@ -17,12 +17,13 @@ function Enemy1.new()
     -- Variables
     Self.MaxHealthPoints = 2
     Self.CurrentHealthPoints = Self.MaxHealthPoints
-    Self.tag = "Player"
+    Self.tag = "Enemy"
+    Self.ScoreWorth = 100
 
     function Self:move()
     end
 
-    function Self:Spawn()
+    function Self:spawn()
     end
 
     return Self
