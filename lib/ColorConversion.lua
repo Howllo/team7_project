@@ -1,3 +1,9 @@
+--***********************************************************************************************
+-- Tony Hardiman, Christian McDonald, Jack Hartwig, Robert Morgan
+-- Team Project
+-- ColorConversion.lua
+--***********************************************************************************************
+
 --Module
 local ColorConversion = {}
 
