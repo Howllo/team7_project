@@ -1,8 +1,15 @@
+--***********************************************************************************************
+-- Tony Hardiman, Christian McDonald, Jack Hartwig, Robert Morgan
+-- Team Project
+-- start.lua
+--***********************************************************************************************
+
 --Requirements
 local widget = require("widget")
 local display = require("display")
 local ColConv = require("lib.ColorConversion")
 local native = require("native")
+local composer = require("composer")
 
 --Module
 local Start = {}
@@ -12,7 +19,7 @@ function Start.new()
 
     local function HandleButtonEvent(event)
         if ( "ended" == event.phase ) then
-            print( "Button was pressed and released" )
+            composer.gotoScene("src.scene.GameScene")
         end
     end
 
