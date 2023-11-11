@@ -1,11 +1,22 @@
 --***********************************************************************************************
 -- Tony Hardiman, Christian McDonald, Jack Hartwig, Robert Morgan
 -- Team Project
--- main.lua
+-- Projectile.lua
 --***********************************************************************************************
 
---Requirements
-local composer = require( "composer" )
+-- Requirements
+local physics = require("physics")
 
--- Go to the start screen
-composer.gotoScene("src.scene.TitleScreen")
+--Module 
+Projectile = {}
+
+function Projectile.new()
+    local Self = {}
+
+    -- Variables
+    Self.Damage = 0
+
+    return Self
+end
+
+return Projectile
