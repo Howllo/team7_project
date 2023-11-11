@@ -19,6 +19,18 @@ function PlayerCharacter.new()
     Self.CurrentHealthPoints = Self.MaxHealthPoints
     Self.tag = "Player"
 
+    function Self:move()
+        print("PlayerCharacter:move()")
+    end
+
+    function Self:spawn()
+        print("PlayerCharacter:spawn()")
+    end
+
+    function Self:destroy()
+        print("PlayerCharacter:destroy()")
+    end
+
     return Self
 end
 

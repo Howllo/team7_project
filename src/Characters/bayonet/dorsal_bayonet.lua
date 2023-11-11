@@ -5,7 +5,7 @@
 --***********************************************************************************************
 
 -- Requirements
-local bayonet_sheet = require("src.bayonet.bayonet_sheet")
+local bayonet_sheet = require("src.Characters.bayonet.bayonet_sheet")
 local display = require("display")
 
 -- Module
@@ -38,9 +38,6 @@ function M.rotateDorsalFin()
         dorsalFin.y = -47
     end
 end
-
--- Event Listener for the Dorsal Animation
-dorsalFin:addEventListener("tap", M.tapEventHandler)
 
 -- return module
 return M

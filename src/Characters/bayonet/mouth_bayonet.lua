@@ -5,7 +5,7 @@
 --***********************************************************************************************
 
 -- Requirements
-local bayonet_sheet = require("src.bayonet.bayonet_sheet")
+local bayonet_sheet = require("src.Characters.bayonet.bayonet_sheet")
 local display = require("display")
 local timer = require("timer")
 
@@ -17,6 +17,7 @@ local sheet = bayonet_sheet.GetSheet()
 local bayonetGroup = bayonet_sheet.GetBayonetGroup()
 local currentFrame = 1
 local isMouthOpen = false
+
 -- Sequence Data
 local sequenceData = {
     {name="mouth1", start=5, count=3, loopCount = 0}

@@ -5,7 +5,7 @@
 --***********************************************************************************************
 
 -- Requirements
-local bayonet_sheet = require("src.bayonet.bayonet_sheet")
+local bayonet_sheet = require("src.Characters.bayonet.bayonet_sheet")
 local display = require("display")
 
 -- Module

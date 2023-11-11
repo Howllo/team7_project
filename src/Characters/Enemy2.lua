@@ -25,7 +25,10 @@ function Enemy2.new()
 
     function Self:spawn()
     end
-
+    
+    function Self:destroy()
+    end
+    
     return Self
 end
 

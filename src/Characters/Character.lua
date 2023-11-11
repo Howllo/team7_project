@@ -27,6 +27,10 @@ function Character.new()
         print("Module Character: move()")
     end
 
+    function Self:destroy()
+        print("Module Character: destroy()")
+    end
+
     function Self:DealDamage(damage)
         Self.CurrentHealthPoints = Self.CurrentHealthPoints - damage
     end

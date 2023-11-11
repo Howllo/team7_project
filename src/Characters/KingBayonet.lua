@@ -7,13 +7,13 @@
 -- Requirements
 local Character = require("src.Characters.Character")
 local Projectile = require("src.Characters.Projectile")
-local bayonet = require("src.bayonet.bayonet_sheet")
-local mouth = require("src.bayonet.mouth_bayonet")
-local caudal = require("src.bayonet.caudal_bayonet")
-local pectoral = require("src.bayonet.pectoral_bayonet")
-local snout = require("src.bayonet.snout_bayonet")
-local dorsal = require("src.bayonet.dorsal_bayonet")
-local body = require("src.bayonet.body_bayonet")
+local bayonet = require("src.Characters.bayonet.bayonet_sheet")
+local mouth = require("src.Characters.bayonet.mouth_bayonet")
+local caudal = require("src.Characters.bayonet.caudal_bayonet")
+local pectoral = require("src.Characters.bayonet.pectoral_bayonet")
+local snout = require("src.Characters.bayonet.snout_bayonet")
+local dorsal = require("src.Characters.bayonet.dorsal_bayonet")
+local body = require("src.Characters.bayonet.body_bayonet")
 
 -- Module
 KingBayonet = {}
