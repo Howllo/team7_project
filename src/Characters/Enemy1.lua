@@ -13,7 +13,7 @@ local Enemy1 = {}
 
 function Enemy1.new()
     local Self = Character.new()
-    -- Self.Projectile = Projectile.new()  
+    Self.Projectile = Projectile.new()  
 
     -- Variables
     Self.MaxHealthPoints = 2
