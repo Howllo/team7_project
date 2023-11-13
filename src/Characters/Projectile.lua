@@ -23,7 +23,7 @@ Projectile = {}
 -- @xForce - The amount of force the projectile will be fired with.
 --
 -- @size - The size of the projectile.
-function Projectile.new(character, damage, xForce, size)
+function Projectile.new(character, damage, xForce, size, oppositeGroup)
     local Self = {}
 
     -- Physics
@@ -32,7 +32,13 @@ function Projectile.new(character, damage, xForce, size)
 
     -- Variables
     local SelfDestroy = nil
-    Self.shape = display.newCircle( character.shape.x + 50, character.shape.y, size )
+    Self.shape = nil
+    if oppositeGroup == character.shape.BayonetGroup then
+        Self.shape = display.newCircle( oppositeGroup, character.shape.x - 525, character.shape.y - 315, size )
+    else
+        Self.shape = display.newCircle( oppositeGroup, character.shape.x + 50, character.shape.y, size )
+    end
+
     Self.shape.char = character.shape
     Self.shape:setFillColor( ColorConversion.HexToNorm("#2FF924") )
     Self.shape.Damage = damage

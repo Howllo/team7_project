@@ -27,6 +27,7 @@ function PlayerCharacter.new()
     Self.shape.GameHUD = nil
     Self.shape.CurrentHealthPoints = Self.shape.MaxHealthPoints
     Self.shape.tag = "Player"
+    Self.shape.BayonetGroup = nil
 
     -- Movement
     local PlayerMovementShoot = PlayerMovementShoot.new(Self)
@@ -41,12 +42,16 @@ function PlayerCharacter.new()
     end
 
     function Self.shape:Fire()
-        Projectile.new(Self, 1, 25, 15)
+        Projectile.new(Self, 1, 25, 15, Self.shape.BayonetGroup)
     end
 
     -- Set Game HUD for updating
     function Self.shape:SetHUD(in_Hud)
         Self.shape.GameHUD = in_Hud
+    end
+
+    function Self.shape:AssignBayonetGroup(in_Bayonet)
+        Self.shape.BayonetGroup = in_Bayonet
     end
 
     return Self

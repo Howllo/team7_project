@@ -28,16 +28,17 @@ function KingBayonet.new()
 
     -- Variables
     Self.shape = display.newRect( bayonet.GetBayonetGroup(), body.body.x + 10, body.body.y - 10, 200, 100 )
-    --Self.shape:setFillColor( 0, 0, 0, 0 )
+    Self.shape:setFillColor( 0, 0, 0, 0 )
     Self.shape.MaxHealthPoints = 1
     Self.shape.CurrentHealthPoints = Self.MaxHealthPoints
     Self.shape.tag = "Enemy"
     Self.shape.ScoreWorth = 100000
-    bayonet.GetBayonetGroup().xScale = 1.5
-    bayonet.GetBayonetGroup().yScale = 1.5
+    Self.shape.BayonetGroup = bayonet.GetBayonetGroup()
 
+
+    
     -- Physics Two
-    physics.addBody( Self.shape, "static", {isSensor = false} )
+    physics.addBody( Self.shape, "dynamic", {isSensor = false, categoryBits = 2, maskBits = 3} )
 
     function Self.shape:move()
     end

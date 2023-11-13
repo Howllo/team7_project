@@ -27,7 +27,12 @@ local kingTimer = nil
 local function spawnKingBayonet()
    KingBayonet = require("src.Characters.KingBayonet")
    kingBayonet = KingBayonet.new()
-   kingBayonet.shape:spawn()
+
+   -- Set player's bayonet group. 
+   -- This is used for projectile collision detection.
+   if player ~= nil and kingBayonet ~= nil then
+      player.shape:AssignBayonetGroup(kingBayonet.shape.BayonetGroup)
+   end
 end
  
 function scene:create( event )
@@ -44,14 +49,6 @@ function scene:create( event )
 
    -- Test
    spawnKingBayonet()
-   local shape = display.newRect( 0, 0, 100, 100 )
-   physics.addBody( shape, "static", {isSensor = false} )
-   shape.x = display.contentCenterX
-   shape.y = display.contentCenterY
-   shape.tag = "Enemy"
-   shape.ScoreWorth = 100000
-   shape.CurrentHealthPoints = 1
-
 end
  
 -- "scene:show()"
