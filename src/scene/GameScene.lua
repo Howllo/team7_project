@@ -8,12 +8,15 @@
 local composer = require( "composer" )
 local timer = require("timer")
 local GameHUD = require("src.user_interface.GameHUD")
-local scene = composer.newScene()
 local PlayerCharacter = require("src.Characters.PlayerCharacter")
 local Background = require("src.user_interface.Background")
+local physics = require("physics")
+local DebugLines = nil
 local KingBayonet = nil
 
 -- Variables
+physics.start()
+local scene = composer.newScene()
 local HUD = nil
 local player = nil
 local bg = nil
@@ -24,7 +27,7 @@ local kingTimer = nil
 local function spawnKingBayonet()
    KingBayonet = require("src.Characters.KingBayonet")
    kingBayonet = KingBayonet.new()
-   kingBayonet:spawn()
+   kingBayonet.shape:spawn()
 end
  
 function scene:create( event )
@@ -34,7 +37,21 @@ function scene:create( event )
    player = PlayerCharacter.new()
 
    -- Create HUD
-   HUD = GameHUD.new(player, sceneGroup)
+   HUD = GameHUD.new(player.shape, sceneGroup)
+
+   -- Set HUD for player
+   player.shape:SetHUD(HUD)
+
+   -- Test
+   spawnKingBayonet()
+   local shape = display.newRect( 0, 0, 100, 100 )
+   physics.addBody( shape, "static", {isSensor = false} )
+   shape.x = display.contentCenterX
+   shape.y = display.contentCenterY
+   shape.tag = "Enemy"
+   shape.ScoreWorth = 100000
+   shape.CurrentHealthPoints = 1
+
 end
  
 -- "scene:show()"
@@ -44,7 +61,6 @@ function scene:show( event )
  
    if ( phase == "will" ) then
    elseif ( phase == "did" ) then
-
       -- Create timer to spawn King Bayonet. 2 minutes.
       kingTimer = timer.performWithDelay( 120000, spawnKingBayonet, 1 )
    end

@@ -17,9 +17,9 @@ local sequenceData = {
 }
 
 --Create Body
-local body = display.newSprite(bayonet_sheet.GetBayonetGroup(), bayonet_sheet.GetSheet() , sequenceData )
-body.x = 0
-body.y = 0
+M.body = display.newSprite(bayonet_sheet.GetBayonetGroup(), bayonet_sheet.GetSheet() , sequenceData )
+M.body.x = 0
+M.body.y = 0
 
 -- return module
 return M

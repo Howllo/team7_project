@@ -6,15 +6,75 @@
 
 -- Requirements
 local physics = require("physics")
+local display = require("display")
+local physics = require("physics")
+local timer = require("timer")
+local ColorConversion = require("lib.ColorConversion")
 
 --Module 
 Projectile = {}
 
-function Projectile.new()
+-- Constructor
+--
+-- @charaacter - The character that fired the projectile.
+--
+-- @damage - The amount of damage the projectile will deal.
+--
+-- @xForce - The amount of force the projectile will be fired with.
+--
+-- @size - The size of the projectile.
+function Projectile.new(character, damage, xForce, size)
     local Self = {}
 
+    -- Physics
+    physics.start()
+    physics.setGravity( 0, 0 )
+
     -- Variables
-    Self.Damage = 0
+    local SelfDestroy = nil
+    Self.shape = display.newCircle( character.shape.x + 50, character.shape.y, size )
+    Self.shape.char = character.shape
+    Self.shape:setFillColor( ColorConversion.HexToNorm("#2FF924") )
+    Self.shape.Damage = damage
+    Self.shape.xForce = xForce
+    Self.shape.tag = "Projectile"
+
+    -- Physics
+    physics.addBody( Self.shape, "dynamic", {isSensor = false})
+    Self.shape:applyForce( Self.shape.xForce, 0, Self.shape.char.x + 5, Self.shape.char.y)
+
+    -- Self Destroy 
+    function Self:destroy()
+        timer.cancel( SelfDestroy )
+        Self.shape.char = nil
+        SelfDestroy = nil
+        Self.shape:removeSelf()
+        Self = nil
+    end
+
+    local function localDestroy()
+        Self:destroy()
+    end 
+    SelfDestroy = timer.performWithDelay( 1500, localDestroy, 1 )
+ 
+    local function onProjectileCollision(self, event)
+        print("Projectile: onProjectileCollision()")
+        if event.phase == "began" then
+            if Self.shape.char.tag == "Player" and event.other.tag == "Enemy" then
+                if event.other.CurrentHealthPoints - Self.shape.Damage <= 0 then
+                    Self.shape.char.GameHUD:UpdateScore(event.other.ScoreWorth)
+                end
+
+                event.other:DealDamage(Self.shape.Damage)
+                Self:destroy()
+            elseif Self.shape.char.tag == "Enemy" and event.other.tag == "Player" then
+                event.other:DealDamage(Self.shape.Damage)
+                Self:destroy()
+            end
+        end
+    end
+    Self.shape.collision = onProjectileCollision
+    Self.shape:addEventListener("collision")
 
     return Self
 end

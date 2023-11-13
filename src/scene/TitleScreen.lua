@@ -34,7 +34,6 @@ function scene:show( event )
  
    if ( phase == "will" ) then
    elseif ( phase == "did" ) then
-      
    end
 end
  

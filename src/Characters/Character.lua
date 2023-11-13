@@ -14,25 +14,25 @@ function Character.new()
     local Self = {}
 
     -- Varaibles
-    Self.MaxHealthPoints = 0
-    Self.CurrentHealthPoints = 0
-    Self.tag = ""
     Self.shape = display.newRect(0, 0, 0, 0)
+    Self.shape.MaxHealthPoints = 0
+    Self.shape.CurrentHealthPoints = 0
+    Self.shape.tag = ""
 
-    function Self:spawn()
+    function Self.shape:spawn()
         print("Module Character: spawn()")
     end
 
-    function Self:move()
+    function Self.shape:move()
         print("Module Character: move()")
     end
 
-    function Self:destroy()
+    function Self.shape:destroy()
         print("Module Character: destroy()")
     end
 
-    function Self:DealDamage(damage)
-        Self.CurrentHealthPoints = Self.CurrentHealthPoints - damage
+    function Self.shape:DealDamage(damage)
+        Self.shape.CurrentHealthPoints = Self.shape.CurrentHealthPoints - damage
     end
 
     return Self

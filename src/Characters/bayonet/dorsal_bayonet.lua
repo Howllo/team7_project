@@ -22,20 +22,20 @@ local sequenceData = {
 }
 
 -- Create Dosral Fin
-local dorsalFin = display.newSprite(bayonetGroup, sheet , sequenceData )
-dorsalFin.x = 15
-dorsalFin.y = -47
+M.dorsalFin = display.newSprite(bayonetGroup, sheet , sequenceData )
+M.dorsalFin.x = 15
+M.dorsalFin.y = -47
 
 -- Sprite placement animation hack.
 function M.rotateDorsalFin()
     if isOriginalRotation == true then 
-        dorsalFin:rotate( turningDegree )
+        M.dorsalFin:rotate( turningDegree )
         isOriginalRotation = false
-        dorsalFin.y = -40
+        M.dorsalFin.y = -40
     else
-        dorsalFin:rotate( -turningDegree )
+        M.dorsalFin:rotate( -turningDegree )
         isOriginalRotation = true
-        dorsalFin.y = -47
+        M.dorsalFin.y = -47
     end
 end
 

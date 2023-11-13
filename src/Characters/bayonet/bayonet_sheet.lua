@@ -37,7 +37,7 @@ local opt =
 local sheet = graphics.newImageSheet( "data/KingBayonet.png", opt );
 
 -- Create Group
-local bayonetGroup = display.newGroup()
+bayonetGroup = display.newGroup()
 
 -- Set bayonet position to middle.
 bayonetGroup.x = display.contentWidth / 2
