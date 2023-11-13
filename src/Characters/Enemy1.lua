@@ -6,13 +6,14 @@
 
 -- Requirements
 local Character = require("src.Characters.Character")
+local display = require("display")
 
 -- Module
-Enemy1 = {}
+local Enemy1 = {}
 
 function Enemy1.new()
     local Self = Character.new()
-    Self.Projectile = Projectile.new()
+    Self.Projectile = Projectile.new()  
 
     -- Variables
     Self.MaxHealthPoints = 2
@@ -20,13 +21,22 @@ function Enemy1.new()
     Self.tag = "Enemy"
     Self.ScoreWorth = 100
 
-    function Self:move()
+    function Self:spawn()
+        Self.shape = display.newRect(0, 0, 30, 30)
+        Self.shape:setFillColor(1, 0, 0)
+        Self.shape.x = display.contentWidth
+        Self.shape.y = math.random(0, display.contentHeight)
     end
 
-    function Self:spawn()
+    function Self:move()
+        Self.shape.x = Self.shape.x - 5
     end
 
     function Self:destroy()
+        if Self.shape then
+            Self.shape:removeSelf()
+            Self.shape = nil
+        end
     end
 
     return Self
