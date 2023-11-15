@@ -19,7 +19,7 @@ local display = require("display")
 -- Module
 KingBayonet = {}
 
-function KingBayonet.new()
+function KingBayonet.new(in_player)
     local Self = Character.new()
 
     -- Physics
@@ -30,36 +30,43 @@ function KingBayonet.new()
     Self.shape = display.newRect( bayonet.GetBayonetGroup(), body.body.x + 10, body.body.y - 10, 200, 100 )
     Self.shape:setFillColor( 0, 0, 0, 0 )
     Self.shape.MaxHealthPoints = 1
-    Self.shape.CurrentHealthPoints = Self.MaxHealthPoints
+    Self.shape.CurrentHealthPoints = Self.shape.MaxHealthPoints
     Self.shape.tag = "Enemy"
     Self.shape.ScoreWorth = 100000
     Self.shape.BayonetGroup = bayonet.GetBayonetGroup()
-
-
+    Self.shape.player = in_player
     
     -- Physics Two
     physics.addBody( Self.shape, "dynamic", {isSensor = false, categoryBits = 2, maskBits = 3} )
 
-    function Self.shape:move()
+    function Self:move()
     end
-
-    function Self.shape:spawn()
+ 
+    function Self:spawn()
+        mouth = require("src.Characters.bayonet.mouth_bayonet")
+        caudal = require("src.Characters.bayonet.caudal_bayonet")
+        pectoral = require("src.Characters.bayonet.pectoral_bayonet")
+        snout = require("src.Characters.bayonet.snout_bayonet")
+        dorsal = require("src.Characters.bayonet.dorsal_bayonet")
+        body = require("src.Characters.bayonet.body_bayonet")
     end
-
-    function Self.shape:destroy()
-        mouth = nil
-        caudal = nil
-        pectoral = nil
-        snout = nil
-        dorsal = nil
-        body = nil
-        bayonet = nil
+ 
+    function Self:destroy()
+        if Self.shape.player ~= nil then
+            Self.shape.player.shape.BayonetGroup = nil
+        end
+        
+        bayonet.GetBayonetGroup():removeSelf()
     end
-
+ 
     function Self.shape:DealDamage(damage)
         Self.shape.CurrentHealthPoints = Self.shape.CurrentHealthPoints - damage
-    end
 
+        if Self.shape.CurrentHealthPoints <= 0 then
+            Self:destroy()
+        end
+    end
+ 
     local function onEnemyCollision(event)
         if event.phase == "began" then
             print("Deal damaage to player if close enough")
@@ -67,7 +74,7 @@ function KingBayonet.new()
     end
     Self.shape.collision = onEnemyCollision
     Self.shape:addEventListener("collision")
-
+ 
     return Self
 end
 

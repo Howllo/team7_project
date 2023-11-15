@@ -26,7 +26,7 @@ local kingTimer = nil
 -- Spawn King Bayonet
 local function spawnKingBayonet()
    KingBayonet = require("src.Characters.KingBayonet")
-   kingBayonet = KingBayonet.new()
+   kingBayonet = KingBayonet.new(player)
 
    -- Set player's bayonet group. 
    -- This is used for projectile collision detection.

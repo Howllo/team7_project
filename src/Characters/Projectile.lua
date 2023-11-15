@@ -33,10 +33,11 @@ function Projectile.new(character, damage, xForce, size, oppositeGroup)
     -- Variables
     local SelfDestroy = nil
     Self.shape = nil
-    if oppositeGroup == character.shape.BayonetGroup then
+    
+    if oppositeGroup == character.shape.BayonetGroup and oppositeGroup ~= nil then
         Self.shape = display.newCircle( oppositeGroup, character.shape.x - 525, character.shape.y - 315, size )
     else
-        Self.shape = display.newCircle( oppositeGroup, character.shape.x + 50, character.shape.y, size )
+        Self.shape = display.newCircle(character.shape.x + 50, character.shape.y, size )
     end
 
     Self.shape.char = character.shape
