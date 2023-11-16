@@ -39,7 +39,7 @@ function PlayerCharacter.new()
     end
 
     function Self.shape:Fire()
-        Projectile.new(Self, Self.Damage, 25, 15, Self.shape.BayonetGroup)
+        Projectile.new(Self, Self.Damage, 50, 15, Self.shape.BayonetGroup)
     end
 
     -- Set Game HUD for updating

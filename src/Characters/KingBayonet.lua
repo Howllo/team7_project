@@ -32,7 +32,9 @@ function KingBayonet.new(in_player, gameHUD)
     physics.start()
 
     -- Variables
-    Self.shape = display.newRect( bayonet.GetBayonetGroup(), body.body.x + 10, body.body.y - 10, 200, 100 )
+    if body ~= nil then 
+        Self.shape = display.newRect( bayonet.GetBayonetGroup(), body.body.x + 10, body.body.y - 10, 200, 100 )
+    end
     Self.shape:setFillColor( 1, 1, 1, 0.01 )
     Self.shape.MaxHealthPoints = 30
     Self.shape.CurrentHealthPoints = 30
