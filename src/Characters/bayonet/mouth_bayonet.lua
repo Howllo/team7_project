@@ -24,37 +24,37 @@ local sequenceData = {
 }
 
 -- Setup Mouth images
-local mouthSprite = display.newSprite(bayonetGroup, sheet, sequenceData)
-mouthSprite.x = -41.7
-mouthSprite.y = -3.4
-mouthSprite:scale(1.05, 1.05)
+M.mouthSprite = display.newSprite(bayonetGroup, sheet, sequenceData)
+M.mouthSprite.x = -41.7
+M.mouthSprite.y = -3.4
+M.mouthSprite:scale(1.05, 1.05)
 
 -- Sprite placement animation hack.
 function M.frameRate()
     if isMouthOpen == false then 
         if currentFrame == 1 then
             currentFrame = 2
-            mouthSprite:setFrame( currentFrame )
-            mouthSprite.x = -35.7
-            mouthSprite.y = -3.4
+            M.mouthSprite:setFrame( currentFrame )
+            M.mouthSprite.x = -35.7
+            M.mouthSprite.y = -3.4
         elseif currentFrame == 2 then
             currentFrame = 3
-            mouthSprite:setFrame( currentFrame )
-            mouthSprite.x = -33.5
-            mouthSprite.y = -3.4
+            M.mouthSprite:setFrame( currentFrame )
+            M.mouthSprite.x = -33.5
+            M.mouthSprite.y = -3.4
             isMouthOpen = true
         end
     else
         if currentFrame == 3 then
             currentFrame = 2
-            mouthSprite:setFrame( currentFrame )
-            mouthSprite.x = -35.7
-            mouthSprite.y = -3.4
+            M.mouthSprite:setFrame( currentFrame )
+            M.mouthSprite.x = -35.7
+            M.mouthSprite.y = -3.4
         elseif currentFrame == 2 then
             currentFrame = 1
-            mouthSprite:setFrame( currentFrame )
-            mouthSprite.x = -41.7
-            mouthSprite.y = -3.4
+            M.mouthSprite:setFrame( currentFrame )
+            M.mouthSprite.x = -41.7
+            M.mouthSprite.y = -3.4
             isMouthOpen = false
         end
     end

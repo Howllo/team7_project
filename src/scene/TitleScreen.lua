@@ -19,6 +19,8 @@ function scene:create( event )
  
    -- Background
    bg = display.newImage(sceneGroup, "data/farback.png", display.contentCenterX, display.contentCenterY)
+   bg.xScale = 1.5 
+   bg.yScale = 1.5
 
    -- Create Start UI
    start = startUI.new()
@@ -34,7 +36,6 @@ function scene:show( event )
  
    if ( phase == "will" ) then
    elseif ( phase == "did" ) then
-      
    end
 end
  

@@ -22,36 +22,36 @@ local sequenceData = {
 }
 
 -- Pectoral Fin
-local pectoralFin = display.newSprite(bayonetGroup, sheet, sequenceData)
-pectoralFin.x = 32
-pectoralFin.y = 38
+M.pectoralFin = display.newSprite(bayonetGroup, sheet, sequenceData)
+M.pectoralFin.x = 32
+M.pectoralFin.y = 38
 
 -- Sprite placement animation hack.
 function M.frameRate()
     if isFinOut == true then 
         if currentFrame == 1 then
             currentFrame = 2
-            pectoralFin:setFrame( currentFrame )
-            pectoralFin.x = 32
-            pectoralFin.y = 31
+            M.pectoralFin:setFrame( currentFrame )
+            M.pectoralFin.x = 32
+            M.pectoralFin.y = 31
         elseif currentFrame == 2 then
             currentFrame = 3
-            pectoralFin:setFrame( currentFrame )
-            pectoralFin.x = 32
-            pectoralFin.y = 25
+            M.pectoralFin:setFrame( currentFrame )
+            M.pectoralFin.x = 32
+            M.pectoralFin.y = 25
             isFinOut = false
         end
     else
         if currentFrame == 3 then
             currentFrame = 2
-            pectoralFin:setFrame( currentFrame )
-            pectoralFin.x = 32
-            pectoralFin.y = 31
+            M.pectoralFin:setFrame( currentFrame )
+            M.pectoralFin.x = 32
+            M.pectoralFin.y = 31
         elseif currentFrame == 2 then
             currentFrame = 1
-            pectoralFin:setFrame( currentFrame )
-            pectoralFin.x = 32
-            pectoralFin.y = 38
+            M.pectoralFin:setFrame( currentFrame )
+            M.pectoralFin.x = 32
+            M.pectoralFin.y = 38
             isFinOut = true
         end
     end
