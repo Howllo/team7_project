@@ -17,10 +17,6 @@ PlayerCharacter = {}
 function PlayerCharacter.new()
     local Self = Character.new()
 
-    -- Physics
-    physics.start()
-    physics.setGravity( 0, 0 )
-
     -- Variables
     Self.shape = display.newCircle( 200, display.contentCenterY, 50 )
     Self.shape.MaxHealthPoints = 5
@@ -28,6 +24,7 @@ function PlayerCharacter.new()
     Self.shape.CurrentHealthPoints = Self.shape.MaxHealthPoints
     Self.shape.tag = "Player"
     Self.shape.BayonetGroup = nil
+    Self.Damage = 2
 
     -- Movement
     local PlayerMovementShoot = PlayerMovementShoot.new(Self)
@@ -42,7 +39,7 @@ function PlayerCharacter.new()
     end
 
     function Self.shape:Fire()
-        Projectile.new(Self, 1, 25, 15, Self.shape.BayonetGroup)
+        Projectile.new(Self, Self.Damage, 25, 15, Self.shape.BayonetGroup)
     end
 
     -- Set Game HUD for updating

@@ -10,6 +10,7 @@ local display = require("display")
 local physics = require("physics")
 local timer = require("timer")
 local ColorConversion = require("lib.ColorConversion")
+local damageNumber = require("src.user_interface.DamageNumbers")
 
 --Module 
 Projectile = {}
@@ -23,12 +24,10 @@ Projectile = {}
 -- @xForce - The amount of force the projectile will be fired with.
 --
 -- @size - The size of the projectile.
+--
+-- @oppositeGroup - The group at which the projectile will be fired at.
 function Projectile.new(character, damage, xForce, size, oppositeGroup)
     local Self = {}
-
-    -- Physics
-    physics.start()
-    physics.setGravity( 0, 0 )
 
     -- Variables
     local SelfDestroy = nil
@@ -59,12 +58,22 @@ function Projectile.new(character, damage, xForce, size, oppositeGroup)
         Self = nil
     end
 
+    -- Destroy if off screen
     local function localDestroy()
-        Self:destroy()
+        if Self.shape == nil then return end
+
+        if Self.shape.x > display.contentWidth + 150 then
+            Self:destroy()
+        end
     end 
-    SelfDestroy = timer.performWithDelay( 1500, localDestroy, 1 )
+    SelfDestroy = timer.performWithDelay( 20, localDestroy, 0 )
  
-    local function onProjectileCollision(self, event)
+    -- Collision
+    local collisionEventOtherCache = nil
+    local collisionDamageCache = nil
+    local oppositeGroupCache = nil
+
+    local function onProjectileCollision(event)
         print("Projectile: onProjectileCollision()")
         if event.phase == "began" then
             if Self.shape.char.tag == "Player" and event.other.tag == "Enemy" then
@@ -72,6 +81,21 @@ function Projectile.new(character, damage, xForce, size, oppositeGroup)
                     Self.shape.char.GameHUD:UpdateScore(event.other.ScoreWorth)
                 end
 
+                -- Damage Numbers
+                collisionEventOtherCache = event.other
+                collisionDamageCache = Self.shape.Damage
+                oppositeGroupCache = oppositeGroup
+
+                -- Due to a collision event happening it needs to be delay to next frame.
+                timer.performWithDelay(1,
+                function() 
+                    damageNumber:DamageNumber(collisionEventOtherCache, collisionDamageCache, oppositeGroupCache)
+                    collisionDamageCache = nil
+                    collisionEventOtherCache = nil
+                    oppositeGroupCache = nil
+                 end, 1)
+
+                -- Deal Damage
                 event.other:DealDamage(Self.shape.Damage)
                 Self:destroy()
             elseif Self.shape.char.tag == "Enemy" and event.other.tag == "Player" then
@@ -80,8 +104,7 @@ function Projectile.new(character, damage, xForce, size, oppositeGroup)
             end
         end
     end
-    Self.shape.collision = onProjectileCollision
-    Self.shape:addEventListener("collision")
+    Self.shape:addEventListener("collision", onProjectileCollision)
 
     return Self
 end
