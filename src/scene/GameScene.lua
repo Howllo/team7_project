@@ -44,9 +44,6 @@ function scene:create( event )
 
    -- Set HUD for player
    player.shape:SetHUD(HUD)
-
-   -- Test
-   spawnKingBayonet()
 end
  
 -- "scene:show()"

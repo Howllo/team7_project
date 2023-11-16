@@ -32,7 +32,7 @@ function KingBayonet.new(in_player)
         Self.shape = display.newRect( bayonet.GetBayonetGroup(), body.body.x + 10, body.body.y - 10, 200, 100 )
     end
     Self.shape:setFillColor( 0, 0, 0, 0 )
-    Self.shape.MaxHealthPoints = 1
+    Self.shape.MaxHealthPoints = 30
     Self.shape.CurrentHealthPoints = Self.shape.MaxHealthPoints
     Self.shape.tag = "Enemy"
     Self.shape.ScoreWorth = 100000
