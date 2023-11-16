@@ -19,6 +19,8 @@ function scene:create( event )
  
    -- Background
    bg = display.newImage(sceneGroup, "data/farback.png", display.contentCenterX, display.contentCenterY)
+   bg.xScale = 1.5 
+   bg.yScale = 1.5
 
    -- Create Start UI
    start = startUI.new()

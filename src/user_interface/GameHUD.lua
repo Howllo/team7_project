@@ -31,6 +31,9 @@ function GameHUD.new(player, sceneGroup)
     function Self:UpdateScore(newScore)
         Self.Score = Self.Score + newScore
         scoreText.text = "Score: " .. Self.Score
+        if string.len(scoreText.text) >= 11 then
+            scoreText.x = scoreText.x + 50
+        end
     end
 
     return Self

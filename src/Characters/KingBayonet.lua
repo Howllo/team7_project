@@ -35,6 +35,7 @@ function KingBayonet.new(in_player)
     Self.shape.ScoreWorth = 100000
     Self.shape.BayonetGroup = bayonet.GetBayonetGroup()
     Self.shape.player = in_player
+    Self.isDead = false
     
     -- Physics Two
     physics.addBody( Self.shape, "dynamic", {isSensor = false, categoryBits = 2, maskBits = 3} )
@@ -56,7 +57,22 @@ function KingBayonet.new(in_player)
             Self.shape.player.shape.BayonetGroup = nil
         end
         
-        bayonet.GetBayonetGroup():removeSelf()
+        bayonetGroup:removeSelf()
+        display.remove( Self.shape )
+        local bayonet = nil
+        local mouth = nil
+        local caudal = nil
+        local pectoral = nil
+        local snout = nil
+        local dorsal = nil
+        local body = nil
+        Self.shape.MaxHealthPoints = nil
+        Self.shape.CurrentHealthPoints = nil
+        Self.shape.tag = nil
+        Self.shape.ScoreWorth = nil
+        Self.shape.BayonetGroup = nil
+        Self.shape.player = nil
+        Self.isDead = true
     end
  
     function Self.shape:DealDamage(damage)

@@ -11,7 +11,6 @@ local GameHUD = require("src.user_interface.GameHUD")
 local PlayerCharacter = require("src.Characters.PlayerCharacter")
 local Background = require("src.user_interface.Background")
 local physics = require("physics")
-local DebugLines = nil
 local KingBayonet = nil
 
 -- Variables
@@ -19,7 +18,6 @@ physics.start()
 local scene = composer.newScene()
 local HUD = nil
 local player = nil
-local bg = nil
 local kingBayonet = nil
 local kingTimer = nil
  
@@ -82,6 +80,20 @@ function scene:destroy( event )
  
    local sceneGroup = self.view
 end
+
+-- Update Function
+local function update()
+   if kingBayonet ~= nil then
+      kingBayonet:move()
+
+      if kingBayonet.isDead == true then
+         kingBayonet = nil
+         kingBayonet = nil
+      end
+   end
+end
+timer.performWithDelay( 20, update, 0 )
+
  
 ---------------------------------------------------------------------------------
  
