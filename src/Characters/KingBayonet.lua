@@ -25,7 +25,7 @@ KingBayonet = {}
 -- @in_player - The player character.
 --
 -- @gameHUD - The game HUD.
-function KingBayonet.new(in_player, gameHUD)
+function KingBayonet.Spawn(in_player, gameHUD)
     local Self = Character.new(display.newRect( bayonet.GetBayonetGroup(), body.body.x + 10, body.body.y - 10, 200, 100 ))
 
     -- Physics
@@ -46,15 +46,6 @@ function KingBayonet.new(in_player, gameHUD)
     physics.addBody( Self.shape, "kinematic", {isSensor = false, categoryBits = 2, maskBits = 3} )
 
     function Self:move()
-    end
- 
-    function Self:spawn()
-        mouth = require("src.Characters.bayonet.mouth_bayonet")
-        caudal = require("src.Characters.bayonet.caudal_bayonet")
-        pectoral = require("src.Characters.bayonet.pectoral_bayonet")
-        snout = require("src.Characters.bayonet.snout_bayonet")
-        dorsal = require("src.Characters.bayonet.dorsal_bayonet")
-        body = require("src.Characters.bayonet.body_bayonet")
     end
  
     function Self:destroy()

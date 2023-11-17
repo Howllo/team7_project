@@ -26,7 +26,7 @@ local enemies = {}
 -- Spawn King Bayonet
 local function spawnKingBayonet()
    KingBayonet = require("src.Characters.KingBayonet")
-   kingBayonet = KingBayonet.new(player,  HUD)
+   kingBayonet = KingBayonet.Spawn(player,  HUD)
 
    -- Set player's bayonet group. 
    -- This is used for projectile collision detection.
