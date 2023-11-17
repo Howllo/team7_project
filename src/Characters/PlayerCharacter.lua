@@ -14,11 +14,10 @@ local physics = require("physics")
 -- Module
 PlayerCharacter = {}
 
-function PlayerCharacter.new()
-    local Self = Character.new()
+function PlayerCharacter.Spawn()
+    local Self = Character.new(display.newCircle( 200, display.contentCenterY, 50 ))
 
     -- Variables
-    Self.shape = display.newCircle( 200, display.contentCenterY, 50 )
     Self.shape.MaxHealthPoints = 5
     Self.shape.GameHUD = nil
     Self.shape.CurrentHealthPoints = Self.shape.MaxHealthPoints

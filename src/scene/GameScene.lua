@@ -10,7 +10,6 @@ local timer = require("timer")
 local GameHUD = require("src.user_interface.GameHUD")
 local Enemy1 = require("src.Characters.Enemy1")
 local Enemy2 = require("src.Characters.Enemy2")
-local scene = composer.newScene()
 local PlayerCharacter = require("src.Characters.PlayerCharacter")
 local Background = require("src.user_interface.Background")
 local physics = require("physics")
@@ -22,7 +21,7 @@ local HUD = nil
 local player = nil
 local kingBayonet = nil
 local kingTimer = nil
-local enemies = {} 
+local enemies = {}
 
 -- Spawn King Bayonet
 local function spawnKingBayonet()
@@ -38,15 +37,18 @@ end
 
 -- Spawn Enemy 1
 local function spawnEnemy1()
-    local enemy = Enemy1.new()
-    enemy:spawn()
+    local enemy = Enemy1.Spawn()
     table.insert(enemies, enemy)
 end
 
 -- Spawn Enemy 2
 local function spawnEnemy2()
-    local enemy = Enemy2.new(player)
-    enemy:spawn()
+    if player == nil then
+        print("Error: player is nil")
+        return
+    end
+
+    local enemy = Enemy2.Spawn(player.shape)
     table.insert(enemies, enemy)
 end
 
@@ -56,26 +58,33 @@ local function gameLoop()
         local enemy = enemies[i]
         enemy:move()
 
-        if enemy.CurrentHealthPoints <= 0 or enemy.shape.x < 0 then
+        if enemy.shape.CurrentHealthPoints <= 0 or enemy.shape.x < -10 then
             enemy:destroy()
             table.remove(enemies, i)
         end
     end
+
+    if kingBayonet ~= nil then
+        kingBayonet:move()
+  
+        if kingBayonet.isDead == true then
+           KingBayonet = nil
+           kingBayonet = nil
+        end
+     end
 end
 
 function scene:create( event )
     local sceneGroup = self.view
 
     -- Create Player
-    player = PlayerCharacter.new()
+    player = PlayerCharacter.Spawn()
 
-   -- Create HUD
-   HUD = GameHUD.new(player.shape, sceneGroup)
-
-   -- Set HUD for player
-   player.shape:SetHUD(HUD)
     -- Create HUD
-    HUD = GameHUD.new(player, sceneGroup)
+    HUD = GameHUD.new(player.shape, sceneGroup)
+
+    -- Set HUD for player
+    player.shape:SetHUD(HUD)
 end
 
 -- "scene:show()"
@@ -85,19 +94,21 @@ function scene:show( event )
     local phase = event.phase
 
     if ( phase == "will" ) then
-       -- Physics
-       physics.start()
+        -- Physics
+        physics.start()
     elseif ( phase == "did" ) then
-      -- Create timer to spawn King Bayonet. 2 minutes.
-      kingTimer = timer.performWithDelay( 120000, spawnKingBayonet, 1 )
+        -- Create timer to spawn King Bayonet. 2 minutes.
+        kingTimer = timer.performWithDelay( 120000, spawnKingBayonet, 1 )
 
-      -- Create timer to spawn Enemy 1. 5 seconds.
-      timer.performWithDelay( 5000, spawnEnemy1, 0 )
+        if kingBayonet == nil then 
+            -- Create timer to spawn Enemy 1. 5 seconds.
+            timer.performWithDelay( 5000, spawnEnemy1, 0 )
 
-      -- Create timer to spawn Enemy 2. 10 seconds.
-      timer.performWithDelay( 10000, spawnEnemy2, 0 )
+            -- Create timer to spawn Enemy 2. 10 seconds.
+            timer.performWithDelay( 10000, spawnEnemy2, 0 )
+        end
 
-      -- Start the game loop
+        -- Start the game loop
         Runtime:addEventListener("enterFrame", gameLoop)
     end
 end
@@ -122,22 +133,8 @@ end
 
 -- "scene:destroy()"
 function scene:destroy( event )
-
     local sceneGroup = self.view
 end
-
--- Update Function
-local function update()
-   if kingBayonet ~= nil then
-      kingBayonet:move()
-
-      if kingBayonet.isDead == true then
-         KingBayonet = nil
-         kingBayonet = nil
-      end
-   end
-end
-timer.performWithDelay( 20, update, 0 )
 
 ---------------------------------------------------------------------------------
 

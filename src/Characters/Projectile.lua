@@ -27,6 +27,8 @@ Projectile = {}
 --
 -- @oppositeGroup - The group at which the projectile will be fired at.
 function Projectile.new(character, damage, xForce, size, oppositeGroup)
+    if character == nil then return end
+
     local Self = {}
 
     -- Variables
@@ -39,6 +41,7 @@ function Projectile.new(character, damage, xForce, size, oppositeGroup)
         Self.shape = display.newCircle(character.shape.x + 50, character.shape.y, size )
     end
 
+    -- Setup
     Self.shape.char = character.shape
     Self.shape:setFillColor( ColorConversion.HexToNorm("#2FF924") )
     Self.shape.Damage = damage
@@ -69,12 +72,9 @@ function Projectile.new(character, damage, xForce, size, oppositeGroup)
     SelfDestroy = timer.performWithDelay( 20, localDestroy, 0 )
  
     -- Collision
-    local collisionEventOtherCache = nil
-    local collisionDamageCache = nil
     local oppositeGroupCache = nil
 
     local function onProjectileCollision(event)
-        print("Projectile: onProjectileCollision()")
         if event.phase == "began" then
             if Self.shape.char.tag == "Player" and event.other.tag == "Enemy" then
                 if event.other.CurrentHealthPoints - Self.shape.Damage <= 0 then
@@ -82,22 +82,18 @@ function Projectile.new(character, damage, xForce, size, oppositeGroup)
                 end
 
                 -- Damage Numbers
-                collisionEventOtherCache = event.other
-                collisionDamageCache = Self.shape.Damage
                 oppositeGroupCache = oppositeGroup
 
                 -- Due to a collision event happening it needs to be delay to next frame.
                 timer.performWithDelay(1,
                 function() 
-                    damageNumber:DamageNumber(collisionEventOtherCache, collisionDamageCache, oppositeGroupCache)
-                    collisionDamageCache = nil
-                    collisionEventOtherCache = nil
+                    damageNumber:DamageNumber(Self.shape, Self.shape.Damage, oppositeGroupCache)
                     oppositeGroupCache = nil
+                    Self:destroy()
                  end, 1)
 
                 -- Deal Damage
                 event.other:DealDamage(Self.shape.Damage)
-                Self:destroy()
             elseif Self.shape.char.tag == "Enemy" and event.other.tag == "Player" then
                 event.other:DealDamage(Self.shape.Damage)
                 Self:destroy()

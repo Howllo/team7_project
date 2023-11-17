@@ -7,26 +7,27 @@
 -- Requirements
 local Character = require("src.Characters.Character")
 local display = require("display")
+local physics = require("physics")
 
 -- Module
 local Enemy1 = {}
 
-function Enemy1.new()
-    local Self = Character.new()
-    Self.Projectile = Projectile.new()  
+function Enemy1.Spawn()
+    local Self = Character.new(display.newRect(0, 0, 30, 30))
+
+    -- Setup
+    Self.shape:setFillColor(1, 0, 0)
+    Self.shape.x = display.contentWidth
+    Self.shape.y = math.random(150, display.contentHeight - 100)
 
     -- Variables
-    Self.MaxHealthPoints = 2
-    Self.CurrentHealthPoints = Self.MaxHealthPoints
-    Self.tag = "Enemy"
-    Self.ScoreWorth = 100
+    Self.shape.MaxHealthPoints = 2
+    Self.shape.CurrentHealthPoints = Self.shape.MaxHealthPoints
+    Self.shape.tag = "Enemy"
+    Self.shape.ScoreWorth = 100
 
-    function Self:spawn()
-        Self.shape = display.newRect(0, 0, 30, 30)
-        Self.shape:setFillColor(1, 0, 0)
-        Self.shape.x = display.contentWidth
-        Self.shape.y = math.random(0, display.contentHeight)
-    end
+    -- Physics
+    physics.addBody( Self.shape, "kinematic", {isSensor = false} )
 
     function Self:move()
         Self.shape.x = Self.shape.x - 5

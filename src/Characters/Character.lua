@@ -10,11 +10,11 @@ local display = require("display")
 -- Module
 Character = {}
 
-function Character.new()
+function Character.new(shapeObject)
     local Self = {}
 
     -- Varaibles
-    Self.shape = display.newRect(0, 0, 0, 0)
+    Self.shape = shapeObject
     Self.shape.MaxHealthPoints = 0
     Self.shape.CurrentHealthPoints = 0
     Self.shape.tag = ""

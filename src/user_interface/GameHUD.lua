@@ -62,7 +62,7 @@ function GameHUD.new(player, in_sceneGroup)
             disableSlider:setFillColor(1, 1, 1, 0.01)
             disableSlider:addEventListener("touch", function(event) return true end)
         elseif healthBar ~= nil then
-            if health <= 0 then
+            if health <= 0 and disableSlider then
                 healthBar:removeSelf()
                 healthBar = nil
 
