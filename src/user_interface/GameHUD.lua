@@ -14,6 +14,8 @@ function GameHUD.new(player, in_sceneGroup)
     Self.Player = player
     Self.Score = 0
     local sceneGroup = in_sceneGroup
+    local textMove = false
+    local textMove2 = false
 
     -- Background
     local rect = display.newRect(sceneGroup, display.contentCenterX, 20, display.actualContentWidth, 90)
@@ -37,8 +39,12 @@ function GameHUD.new(player, in_sceneGroup)
     function Self:UpdateScore(newScore)
         Self.Score = Self.Score + newScore
         scoreText.text = "Score: " .. Self.Score
-        if string.len(scoreText.text) >= 11 then
+        if string.len(scoreText.text) >= 12 and textMove == false then
             scoreText.x = scoreText.x + 50
+            textMove = true
+        elseif string.len(scoreText.text) >= 11 and textMove2 == false then
+            scoreText.x = scoreText.x + 20
+            textMove2 = true
         end
     end
 
