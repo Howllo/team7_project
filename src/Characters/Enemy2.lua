@@ -28,10 +28,11 @@ function Enemy2.Spawn(playerCharacter)
     Self.shape.playerCharacter = playerCharacter
 
     -- Physics
-    physics.addBody( Self.shape, "kinematic", {isSensor = false} )
+    physics.addBody( Self.shape, "dyanmic", {isSensor = true} )
+    Self.shape.gravityScale = 0
 
     function Self:move()
-        if  Self.shape.playerCharacter then
+        if  Self.shape.playerCharacter and Self.shape then
             local targetX = Self.shape.playerCharacter.x
             local targetY = Self.shape.playerCharacter.y
             local moveX = (targetX - Self.shape.x) * 0.01
@@ -47,6 +48,16 @@ function Enemy2.Spawn(playerCharacter)
             Self.shape = nil
         end
     end
+
+    local function onCollision(event)
+        if event.phase == "began" then
+            if event.other.tag == "Player" then
+                event.other:DealDamage(Self.shape.CurrentHealthPoints)
+                Self.shape.CurrentHealthPoints = -1
+            end
+        end
+    end
+    Self.shape:addEventListener("collision", onCollision)
 
     return Self
 end

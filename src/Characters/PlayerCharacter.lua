@@ -25,16 +25,17 @@ function PlayerCharacter.Spawn()
     Self.shape.BayonetGroup = nil
     Self.Damage = 2
 
+
+    -- Physics
+    physics.addBody( Self.shape, "dynamic", {isSensor = true} )
+    Self.shape.gravityScale = 0
+
     -- Movement
     local PlayerMovementShoot = PlayerMovementShoot.new(Self)
 
-    function Self.shape:destroy()
-        print("PlayerCharacter:destroy()")
-    end
-
     function Self.shape:DealDamage(damage)
         Self.shape.CurrentHealthPoints = Self.shape.CurrentHealthPoints - damage
-        Self.shape.GameHUD:updateHealthBar()
+        Self.shape.GameHUD:UpdateHealthBar()
     end
 
     function Self.shape:Fire()
@@ -42,7 +43,7 @@ function PlayerCharacter.Spawn()
     end
 
     -- Set Game HUD for updating
-    function Self.shape:SetHUD(in_Hud)
+    function Self:SetHUD(in_Hud)
         Self.shape.GameHUD = in_Hud
     end
 

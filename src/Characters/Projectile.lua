@@ -41,7 +41,6 @@ function Projectile.new(character, damage, xForce, size, oppositeGroup)
         Self.shape = display.newCircle(character.shape.x + 50, character.shape.y, size )
     end
 
-    -- Setup
     Self.shape.char = character.shape
     Self.shape:setFillColor( ColorConversion.HexToNorm("#2FF924") )
     Self.shape.Damage = damage
@@ -57,13 +56,13 @@ function Projectile.new(character, damage, xForce, size, oppositeGroup)
         timer.cancel( SelfDestroy )
         Self.shape.char = nil
         SelfDestroy = nil
-        Self.shape:removeSelf()
+        display.remove( Self.shape )
         Self = nil
     end
 
     -- Destroy if off screen
     local function localDestroy()
-        if Self.shape == nil then return end
+        if Self.shape == nil or Self.shape.x == nil then return end
 
         if Self.shape.x > display.contentWidth + 150 then
             Self:destroy()

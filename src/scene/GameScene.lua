@@ -58,7 +58,7 @@ local function gameLoop()
         local enemy = enemies[i]
         enemy:move()
 
-        if enemy.shape.CurrentHealthPoints <= 0 or enemy.shape.x < -10 then
+        if enemy.shape.CurrentHealthPoints <= 0 or enemy.shape.x < -100 then
             enemy:destroy()
             table.remove(enemies, i)
         end
@@ -77,6 +77,9 @@ end
 function scene:create( event )
     local sceneGroup = self.view
 
+    -- Physics 
+    physics.start()
+
     -- Create Player
     player = PlayerCharacter.Spawn()
 
@@ -84,7 +87,7 @@ function scene:create( event )
     HUD = GameHUD.new(player.shape, sceneGroup)
 
     -- Set HUD for player
-    player.shape:SetHUD(HUD)
+    player:SetHUD(HUD)
 end
 
 -- "scene:show()"

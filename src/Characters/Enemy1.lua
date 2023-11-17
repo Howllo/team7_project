@@ -27,10 +27,13 @@ function Enemy1.Spawn()
     Self.shape.ScoreWorth = 100
 
     -- Physics
-    physics.addBody( Self.shape, "kinematic", {isSensor = false} )
+    physics.addBody( Self.shape, "dynamic", {isSensor = true} )
+    Self.shape.gravityScale = 0
 
     function Self:move()
-        Self.shape.x = Self.shape.x - 5
+        if Self.shape then
+            Self.shape.x = Self.shape.x - 5
+        end
     end
 
     function Self:destroy()
@@ -39,6 +42,16 @@ function Enemy1.Spawn()
             Self.shape = nil
         end
     end
+
+    local function onCollision(event)
+        if event.phase == "began" then
+            if event.other.tag == "Player" then
+                event.other:DealDamage(Self.shape.CurrentHealthPoints)
+                Self.shape.CurrentHealthPoints = -1
+            end
+        end
+    end
+    Self.shape:addEventListener("collision", onCollision)
 
     return Self
 end
