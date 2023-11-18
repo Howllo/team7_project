@@ -25,7 +25,6 @@ function PlayerCharacter.Spawn()
     Self.shape.BayonetGroup = nil
     Self.Damage = 2
 
-
     -- Physics
     physics.addBody( Self.shape, "dynamic", {isSensor = true} )
     Self.shape.gravityScale = 0

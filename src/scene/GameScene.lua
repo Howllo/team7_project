@@ -38,7 +38,7 @@ end
 
 -- Spawn Enemy
 local function spawnEnemy()
-    if player == nil and kingBayonet ~= nil then timer.cancel(enemySpawner) return end
+    if player == nil or KingBayonet then timer.cancel(enemySpawner) return end
 
     local randomEnemy = math.random(1, 2)
     if randomEnemy == 1 then
@@ -75,6 +75,7 @@ local function gameLoop()
      end
 end
 
+-- "scene:create()"
 function scene:create( event )
     local sceneGroup = self.view
 
@@ -89,6 +90,9 @@ function scene:create( event )
 
     -- Set HUD for player
     player:SetHUD(HUD)
+
+    -- Test
+    spawnKingBayonet()
 end
 
 -- "scene:show()"
