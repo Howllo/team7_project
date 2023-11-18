@@ -36,7 +36,7 @@ function KingBayonet.Spawn(in_player, gameHUD)
     Self.shape.MaxHealthPoints = 30
     Self.shape.CurrentHealthPoints = 30
     Self.shape.tag = "Enemy"
-    Self.shape.ScoreWorth = 100000
+    Self.shape.ScoreWorth = 10000
     Self.shape.BayonetGroup = bayonet.GetBayonetGroup()
     Self.shape.player = in_player
     Self.isDead = false
