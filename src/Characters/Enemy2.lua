@@ -12,24 +12,26 @@ local physics = require("physics")
 -- Module
 local Enemy2 = {}
 
-function Enemy2.Spawn(playerCharacter)
+function Enemy2.new(playerCharacter)
     local Self = Character.new(display.newCircle(0, 0, 15))
 
-    -- Setup
-    Self.shape:setFillColor(0, 0, 1)
-    Self.shape.x = display.contentWidth
-    Self.shape.y = math.random(150, display.contentHeight - 100)
+    function Self:spawn()
+        -- Setup
+        Self.shape:setFillColor(0, 0, 1)
+        Self.shape.x = display.contentWidth
+        Self.shape.y = math.random(150, display.contentHeight - 100)
 
-    -- Variables
-    Self.shape.MaxHealthPoints = 3
-    Self.shape.CurrentHealthPoints = Self.shape.MaxHealthPoints
-    Self.shape.tag = "Enemy"
-    Self.shape.ScoreWorth = 100
-    Self.shape.playerCharacter = playerCharacter
+        -- Variables
+        Self.shape.MaxHealthPoints = 3
+        Self.shape.CurrentHealthPoints = Self.shape.MaxHealthPoints
+        Self.shape.tag = "Enemy"
+        Self.shape.ScoreWorth = 100
+        Self.shape.playerCharacter = playerCharacter
 
-    -- Physics
-    physics.addBody( Self.shape, "dyanmic", {isSensor = true} )
-    Self.shape.gravityScale = 0
+        -- Physics
+        physics.addBody( Self.shape, "dyanmic", {isSensor = true} )
+        Self.shape.gravityScale = 0
+    end
 
     function Self:move()
         if  Self.shape.playerCharacter and Self.shape then

@@ -22,6 +22,7 @@ local player = nil
 local kingBayonet = nil
 local kingTimer = nil
 local enemies = {}
+local enemySpawner = nil
 
 -- Spawn King Bayonet
 local function spawnKingBayonet()
@@ -35,21 +36,20 @@ local function spawnKingBayonet()
    end
 end
 
--- Spawn Enemy 1
-local function spawnEnemy1()
-    local enemy = Enemy1.Spawn()
-    table.insert(enemies, enemy)
-end
+-- Spawn Enemy
+local function spawnEnemy()
+    if player == nil and kingBayonet ~= nil then timer.cancel(enemySpawner) return end
 
--- Spawn Enemy 2
-local function spawnEnemy2()
-    if player == nil then
-        print("Error: player is nil")
-        return
+    local randomEnemy = math.random(1, 2)
+    if randomEnemy == 1 then
+        local enemy = Enemy1.new()
+        enemy:spawn()
+        table.insert(enemies, enemy)
+    else
+        local enemy = Enemy2.new(player.shape)
+        enemy:spawn()
+        table.insert(enemies, enemy)
     end
-
-    local enemy = Enemy2.Spawn(player.shape)
-    table.insert(enemies, enemy)
 end
 
 -- Game Loop
@@ -70,6 +70,7 @@ local function gameLoop()
         if kingBayonet.isDead == true then
            KingBayonet = nil
            kingBayonet = nil
+           enemySpawner = timer.performWithDelay( 2500, spawnEnemy, 0 )
         end
      end
 end
@@ -103,13 +104,8 @@ function scene:show( event )
         -- Create timer to spawn King Bayonet. 2 minutes.
         kingTimer = timer.performWithDelay( 120000, spawnKingBayonet, 1 )
 
-        if kingBayonet == nil then 
-            -- Create timer to spawn Enemy 1. 5 seconds.
-            timer.performWithDelay( 5000, spawnEnemy1, 0 )
-
-            -- Create timer to spawn Enemy 2. 10 seconds.
-            timer.performWithDelay( 10000, spawnEnemy2, 0 )
-        end
+        -- Create timer to spawn Enemy 1. 2,5 seconds.
+        enemySpawner = timer.performWithDelay( 2500, spawnEnemy, 0 )
 
         -- Start the game loop
         Runtime:addEventListener("enterFrame", gameLoop)

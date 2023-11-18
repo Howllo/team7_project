@@ -19,15 +19,15 @@ function Character.new(shapeObject)
     Self.shape.CurrentHealthPoints = 0
     Self.shape.tag = ""
 
-    function Self.shape:spawn()
+    function Self:spawn()
         print("Module Character: spawn()")
     end
 
-    function Self.shape:move()
+    function Self:move()
         print("Module Character: move()")
     end
 
-    function Self.shape:destroy()
+    function Self:destroy()
         print("Module Character: destroy()")
     end
 
