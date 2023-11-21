@@ -64,7 +64,7 @@ local function gameLoop()
         end
     end
 
-    if kingBayonet ~= nil then
+    if kingBayonet then
         kingBayonet:move()
   
         if kingBayonet.isDead == true then

@@ -49,7 +49,7 @@ function KingBayonet.Spawn(in_player, gameHUD)
     end
  
     function Self:destroy()
-        if Self.shape.player ~= nil then
+        if Self.shape.player then
             Self.shape.player.shape.BayonetGroup = nil
         end
         
@@ -74,7 +74,7 @@ function KingBayonet.Spawn(in_player, gameHUD)
     function Self.shape:DealDamage(damage)
         Self.shape.CurrentHealthPoints = Self.shape.CurrentHealthPoints - damage
         
-        if Self.gameHUD ~= nil then
+        if Self.gameHUD then
             Self.gameHUD:UpdateBayonetHealthBar(Self.shape.CurrentHealthPoints)
         end
  
