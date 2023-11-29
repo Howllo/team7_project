@@ -48,6 +48,8 @@ end
 
 -- Game Loop
 local function gameLoop()
+    -- Update background
+    scene.background:move(1,0.5)
     for i = #enemies, 1, -1 do
         local enemy = enemies[i]
         enemy:move()
@@ -76,6 +78,10 @@ function scene:create( event )
     -- Physics 
     physics.start()
 
+    -- Create Background
+    local background = Background.new()
+    sceneGroup:insert(background)
+
     -- Create Player
     player = PlayerCharacter.Spawn()
 
@@ -84,7 +90,11 @@ function scene:create( event )
 
     -- Set HUD for player
     player:SetHUD(HUD)
+
+    -- Store background in the scene for later access
+    self.background = background
 end
+
 
 -- "scene:show()"
 function scene:show( event )
