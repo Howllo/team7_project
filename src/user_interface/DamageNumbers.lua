@@ -14,7 +14,7 @@ Module = {}
 -- @damage - The amount of damage the projectile will deal.
 --
 -- @oppositeGroup - The group that projectile will attach to.
-function Module:DamageNumber(shape, damage, group)
+function Module:DamageNumber(shape, damage)
     if shape == nil or shape.x == nil or shape.y == nil or damage == nil then
         print("Error: DamageNumber failed to generate.")
         print("Error Dump: " .. tostring(shape))
@@ -24,12 +24,9 @@ function Module:DamageNumber(shape, damage, group)
         return
     end
 
+    -- Variables
     local damageNumber = nil
-    if group ~= nil then
-        damageNumber = display.newText( group, damage, shape.x, shape.y - 25, native.systemFont, 40 )
-    else
-        damageNumber = display.newText( damage, shape.x, shape.y - 25, native.systemFont, 40 )
-    end
+    damageNumber = display.newText( damage, shape.x, shape.y - 25, native.systemFont, 40 )
     damageNumber:setFillColor( 1, 1, 1, 1)
 
     -- Physics

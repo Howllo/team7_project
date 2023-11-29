@@ -16,6 +16,7 @@ local dorsal = require("src.Characters.bayonet.dorsal_bayonet")
 local body = require("src.Characters.bayonet.body_bayonet")
 local physics = require("physics")
 local display = require("display")
+local transition = require("transition")
 
 -- Module
 KingBayonet = {}
@@ -26,7 +27,7 @@ KingBayonet = {}
 --
 -- @gameHUD - The game HUD.
 function KingBayonet.Spawn(in_player, gameHUD)
-    local Self = Character.new(display.newRect( bayonet.GetBayonetGroup(), body.body.x + 10, body.body.y - 10, 200, 100 ))
+    local Self = Character.new(display.newRect( body.body.x + 10, body.body.y - 10, 200, 100 ))
 
     -- Physics
     physics.start()
@@ -41,11 +42,48 @@ function KingBayonet.Spawn(in_player, gameHUD)
     Self.shape.player = in_player
     Self.isDead = false
     Self.gameHUD = gameHUD
+    Self.shape.phase = 0
+    Self.Damage = 1
+ 
+    -- Local
+    local transitionFinish = true
+    local transitionTiming = { time90Min = 1200, time90Max = 1500, time50Min = 800, time50Max = 1000, time10Min = 400, time10Max = 600}
     
     -- Physics Two
     physics.addBody( Self.shape, "kinematic", {isSensor = false, categoryBits = 2, maskBits = 3} )
 
+    local function Helper()
+        timer.performWithDelay( 1000, function() 
+            transitionFinish = true
+        end, 1)
+        Self:Ability()
+    end 
+
     function Self:move()
+        if transitionFinish then 
+            transitionFinish = false
+            local timingMin = 0
+            local timingMax = 0
+
+            -- Three Different Phases
+            if (Self.shape.CurrentHealthPoints/ 30) * 100 > 50 then
+                timingMin = 1200
+                timingMax = 1500
+                Self.shape.phase = 1
+            elseif (Self.shape.CurrentHealthPoints/ 30) * 100 > 10 and (Self.shape.CurrentHealthPoints/ 30) * 100 <= 50 then
+                timingMin = 600
+                timingMax = 800
+                Self.shape.phase = 2
+            elseif (Self.shape.CurrentHealthPoints/ 30) * 100 <= 10 then
+                timingMin = 400
+                timingMax = 600
+                Self.shape.phase = 3
+            end
+
+            local locX = math.random(275, 1050)
+            local locY = math.random(200, 610)
+            transition.to(bayonetGroup, {time = math.random(timingMin, timingMax), x = locX, y = locY, onComplete= Helper }) 
+        end
     end
  
     function Self:destroy()
@@ -85,14 +123,52 @@ function KingBayonet.Spawn(in_player, gameHUD)
  
     local function onEnemyCollision(event)
         if event.phase == "began" then
-            print("Deal damaage to player if close enough")
+            if event.other.tag == "Player" then
+                event.other:DealDamage(4)
+            end
         end
     end
-    Self.shape.collision = onEnemyCollision
-    Self.shape:addEventListener("collision")
+    Self.shape:addEventListener("collision", onEnemyCollision)
 
     -- Activate Health Bar
     Self.shape:DealDamage(0)
+
+    -- Update function
+    local function update()
+        if Self.shape then
+            Self.shape.x = bayonetGroup.x
+            Self.shape.y = bayonetGroup.y
+        end
+    end
+    timer.performWithDelay( 20, update, 0)
+
+    -- Calculate Velocity
+    local function calVelocity(angle, speed)
+        local xVelocity = math.cos(math.rad(angle)) * speed
+        local yVelocity = math.sin(math.rad(angle)) * speed
+        return xVelocity, yVelocity
+    end
+    function Self:Ability()
+        if Self.shape.phase == 1 then
+            Self:Fire(calVelocity(180, 30))
+        elseif Self.shape.phase == 2 then
+            Self:Fire(calVelocity(150, 30))
+            Self:Fire(calVelocity(180, 30))
+            Self:Fire(calVelocity(210, 30))
+        elseif Self.shape.phase == 3 then
+            Self:Fire(calVelocity(150, 15))
+            Self:Fire(calVelocity(180, 15))
+            Self:Fire(calVelocity(210, 15))
+
+            timer.performWithDelay( 500, function() 
+                Self:Fire(calVelocity(180, 15))
+            end, 1)
+        end
+    end
+
+    function Self:Fire(xVelocity, yVelocity)
+        Projectile.new(Self.shape, {x = Self.shape.x - 100, y = Self.shape.y},Self.Damage, xVelocity, yVelocity, 8)
+    end
 
     return Self
 end

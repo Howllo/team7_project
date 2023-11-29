@@ -77,8 +77,6 @@ function GameHUD.new(player, in_sceneGroup)
                 disableSlider = nil
                 return
             end
-
-            print("Health is: " .. healthBar.value)
             healthBar:setValue( (health / 30) * 100 )
         end
     end

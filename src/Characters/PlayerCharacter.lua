@@ -22,7 +22,6 @@ function PlayerCharacter.Spawn()
     Self.shape.GameHUD = nil
     Self.shape.CurrentHealthPoints = Self.shape.MaxHealthPoints
     Self.shape.tag = "Player"
-    Self.shape.BayonetGroup = nil
     Self.Damage = 2
 
     -- Physics
@@ -38,16 +37,12 @@ function PlayerCharacter.Spawn()
     end
 
     function Self.shape:Fire()
-        Projectile.new(Self, Self.Damage, 50, 15, Self.shape.BayonetGroup)
+        Projectile.new(Self.shape, {x = Self.shape.x + 50, y = Self.shape.y}, Self.Damage, 50, 0, 15)
     end
 
     -- Set Game HUD for updating
     function Self:SetHUD(in_Hud)
         Self.shape.GameHUD = in_Hud
-    end
-
-    function Self.shape:AssignBayonetGroup(in_Bayonet)
-        Self.shape.BayonetGroup = in_Bayonet
     end
 
     return Self

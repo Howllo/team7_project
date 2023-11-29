@@ -28,12 +28,6 @@ local enemySpawner = nil
 local function spawnKingBayonet()
    KingBayonet = require("src.Characters.KingBayonet")
    kingBayonet = KingBayonet.Spawn(player,  HUD)
-
-   -- Set player's bayonet group. 
-   -- This is used for projectile collision detection.
-   if player ~= nil and kingBayonet ~= nil then
-      player.shape:AssignBayonetGroup(kingBayonet.shape.BayonetGroup)
-   end
 end
 
 -- Spawn Enemy
@@ -124,6 +118,30 @@ function scene:hide( event )
     
         -- Cancel spawner timer.
         timer.cancel(kingTimer)
+
+        -- Destroy King Bayonet
+        if kingBayonet then
+            kingBayonet:destroy()
+            kingBayonet = nil
+        end
+
+        -- Destroy Player
+        if player then
+            player:destroy()
+            player = nil
+        end
+
+        -- Destroy all enemies
+        if #enemies > 0 then
+            for i = #enemies, 1, -1 do
+                local enemy = enemies[i]
+                enemy:destroy()
+                table.remove(enemies, i)
+            end
+        end
+
+        -- Cancel spawner timer.
+        timer.cancel(enemySpawner)
 
         -- Stop the game loop
         Runtime:removeEventListener("enterFrame", gameLoop)
