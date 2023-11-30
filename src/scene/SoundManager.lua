@@ -31,8 +31,10 @@ end
 -- @soundVolume (float): 0.0 to 1.0
 --
 -- @loop (int): -1 = loop forever, 0 = play once, 1 = play twice, etc.
+-- 
+-- @fadeTime (int): time in milliseconds to fade in 
 --
-function SoundManager:playSound(soundName, channel, soundVolume, loop)
+function SoundManager:playSound(soundName, channel, soundVolume, loop, fadeTime)
     local sound = SoundManager.sounds[soundName]
     if sound then
         if channel == 2 or channel == 4 then
@@ -40,7 +42,7 @@ function SoundManager:playSound(soundName, channel, soundVolume, loop)
         end
 
         audio.setVolume(soundVolume, {channel = channel})
-        audio.play(sound, {channel = channel, loops = loop})
+        audio.play(sound, {channel = channel, loops = loop, fadein = fadeTime})
     end
 end
 

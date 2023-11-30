@@ -40,7 +40,7 @@ local function spawnKingBayonet()
 
     -- Change Music
     SoundManager:stopAudioChannel(10, true, 500)
-    timer.performWithDelay( 600, function() SoundManager:playSound("bayonetOST", 11, 0.7, -1) end, 1 )
+    timer.performWithDelay( 600, function() SoundManager:playSound("bayonetOST", 11, 0.7, -1, 1000) end, 1 )
 
     -- Destroy all enemies
     if #enemies > 0 then
@@ -91,7 +91,7 @@ local function gameLoop()
 
             -- Change Music
             SoundManager:stopAudioChannel(11, true, 500)
-            SoundManager:playSound("ingameOST", 10, 0.7, -1)
+            SoundManager:playSound("ingameOST", 10, 0.7, -1, 1000)
             audio.setVolume( 0.7, {channel = 10} )
         end
 
@@ -144,7 +144,7 @@ function scene:show( event )
         Runtime:addEventListener("enterFrame", gameLoop)
 
         -- Play Ingame Music
-        SoundManager:playSound("ingameOST", 10, 0.7, -1)
+        SoundManager:playSound("ingameOST", 10, 0.7, -1, 1000)
     end
 end
 
