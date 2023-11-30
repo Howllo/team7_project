@@ -14,8 +14,8 @@ function PlayerMovementShoot.new(playerCharacter)
     local projectileShootTime = nil
     local group = display.newGroup()
     local touch = 0
-    local playerMovementRect = display.newRoundedRect( group, 30, 360, 175, 450, 30 )
-    playerMovementRect:setFillColor(ColorConversion.HexToNorm("#D3D3D3"))
+    local playerMovementRect = display.newRoundedRect( group, 30, 360, 150, 450, 30 )
+    playerMovementRect:setFillColor(ColorConversion.HexToNormA("#D3D3D3", 0.7))
 
     -- Cancels Shooting after 300ms
     local function stopShooting()

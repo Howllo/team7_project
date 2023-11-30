@@ -26,8 +26,18 @@ local enemySpawner = nil
 
 -- Spawn King Bayonet
 local function spawnKingBayonet()
-   KingBayonet = require("src.Characters.KingBayonet")
-   kingBayonet = KingBayonet.Spawn(player,  HUD)
+    KingBayonet = require("src.Characters.KingBayonet")
+    kingBayonet = KingBayonet.new(player,  HUD)
+    kingBayonet:spawn()
+
+    -- Destroy all enemies
+    if #enemies > 0 then
+        for i = #enemies, 1, -1 do
+            local enemy = enemies[i]
+            enemy:destroy()
+            table.remove(enemies, i)
+        end
+    end
 end
 
 -- Spawn Enemy

@@ -8,12 +8,12 @@
 local Character = require("src.Characters.Character")
 local timer = require("timer")
 local bayonet = require("src.Characters.bayonet.bayonet_sheet")
-local mouth = require("src.Characters.bayonet.mouth_bayonet")
-local caudal = require("src.Characters.bayonet.caudal_bayonet")
-local pectoral = require("src.Characters.bayonet.pectoral_bayonet")
-local snout = require("src.Characters.bayonet.snout_bayonet")
-local dorsal = require("src.Characters.bayonet.dorsal_bayonet")
-local body = require("src.Characters.bayonet.body_bayonet")
+local mouth = nil
+local caudal = nil
+local pectoral = nil
+local snout = nil
+local dorsal = nil
+local body = nil
 local physics = require("physics")
 local display = require("display")
 local transition = require("transition")
@@ -26,13 +26,11 @@ KingBayonet = {}
 -- @in_player - The player character.
 --
 -- @gameHUD - The game HUD.
-function KingBayonet.Spawn(in_player, gameHUD)
-    local Self = Character.new(display.newRect( body.body.x + 10, body.body.y - 10, 200, 100 ))
-
-    -- Physics
-    physics.start()
+function KingBayonet.new(in_player, gameHUD)
+    local Self = Character.new(display.newRect( 0, 0, 200, 100 ))
 
     -- Variables
+    local transitionFinish = true
     Self.shape:setFillColor( 1, 1, 1, 0.01 )
     Self.shape.MaxHealthPoints = 30
     Self.shape.CurrentHealthPoints = 30
@@ -44,13 +42,22 @@ function KingBayonet.Spawn(in_player, gameHUD)
     Self.gameHUD = gameHUD
     Self.shape.phase = 0
     Self.Damage = 1
- 
-    -- Local
-    local transitionFinish = true
-    local transitionTiming = { time90Min = 1200, time90Max = 1500, time50Min = 800, time50Max = 1000, time10Min = 400, time10Max = 600}
     
-    -- Physics Two
-    physics.addBody( Self.shape, "kinematic", {isSensor = false, categoryBits = 2, maskBits = 3} )
+   function Self:spawn()
+        mouth = require("src.Characters.bayonet.mouth_bayonet")
+        caudal = require("src.Characters.bayonet.caudal_bayonet")
+        pectoral = require("src.Characters.bayonet.pectoral_bayonet")
+        snout = require("src.Characters.bayonet.snout_bayonet")
+        dorsal = require("src.Characters.bayonet.dorsal_bayonet")
+        body = require("src.Characters.bayonet.body_bayonet")
+
+        -- Set Collision
+        Self.shape.x = body.body.x + 10
+        Self.shape.y = body.body.y - 10
+
+        -- Physics Two
+        physics.addBody( Self.shape, "kinematic", {isSensor = false, categoryBits = 2, maskBits = 3} )
+   end
 
     local function Helper()
         timer.performWithDelay( 1000, function() 
@@ -148,6 +155,7 @@ function KingBayonet.Spawn(in_player, gameHUD)
         local yVelocity = math.sin(math.rad(angle)) * speed
         return xVelocity, yVelocity
     end
+    
     function Self:Ability()
         if Self.shape.phase == 1 then
             Self:Fire(calVelocity(180, 30))

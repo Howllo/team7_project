@@ -9,7 +9,7 @@ function Background.new()
     
     -- Image dimensions
     local imageWidth = 1782
-    local imageHeight = 600
+    local imageHeight = 675
 
     -- Far background (static)
     local farback1 = display.newImageRect(group, "data/farback.png", imageWidth, imageHeight)
