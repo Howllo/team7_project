@@ -64,7 +64,6 @@ function Enemy2.new(playerCharacter)
             end
         end
     end
-
     Self.shape:addEventListener("collision", onCollision)
 
     return Self
