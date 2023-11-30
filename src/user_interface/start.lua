@@ -10,6 +10,7 @@ local display = require("display")
 local ColConv = require("lib.ColorConversion")
 local native = require("native")
 local composer = require("composer")
+local SoundManager = require("src.scene.SoundManager")
 
 --Module
 local Start = {}
@@ -19,7 +20,8 @@ function Start.new()
 
     local function HandleButtonEvent(event)
         if ( "ended" == event.phase ) then
-            composer.gotoScene("src.scene.GameScene")
+            SoundManager:playSound("gameStart", 1, 0.8, 0)
+            composer.gotoScene("src.scene.GameScene", {effect = "fade", time = 1000})
         end
     end
 
@@ -45,7 +47,7 @@ function Start.new()
             height = 100,
             cornerRadius = 15,
             fontSize = 30,
-            fillColor = { default={ ColConv.HexToNormAlpha("#ABD6E6")}, over={ ColConv.HexToNormAlpha("#57828F") } },
+            fillColor = { default={ ColConv.HexToNormAlpha("#FFFFFF")}, over={ ColConv.HexToNormAlpha("#57828F") } },
             labelColor = {default={0, 0, 0, 1}, over= {0, 0, 0, 1}},
             onEvent = HandleButtonEvent
         }

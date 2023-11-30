@@ -25,11 +25,22 @@ local kingTimer = nil
 local enemies = {}
 local enemySpawner = nil
 
+-- Enemy Controls
+local enemySpawnTimer = 2500
+local bayonetSpawnTimer = 120000
+
 -- Spawn King Bayonet
 local function spawnKingBayonet()
     KingBayonet = require("src.Characters.KingBayonet")
     kingBayonet = KingBayonet.new(player,  HUD)
     kingBayonet:spawn()
+
+    -- Stop spawner timer.
+    timer.cancel(enemySpawner)
+
+    -- Change Music
+    SoundManager:stopAudioChannel(10, true, 500)
+    timer.performWithDelay( 600, function() SoundManager:playSound("bayonetOST", 11, 0.7, -1) end, 1 )
 
     -- Destroy all enemies
     if #enemies > 0 then
@@ -38,13 +49,6 @@ local function spawnKingBayonet()
             enemy:destroy()
             table.remove(enemies, i)
         end
-    end
-end
-
-local function onCollision(event)
-    if event.phase == "began" then
-        SoundManager:playCollisionSound()
-        -- Rest of your collision handling code
     end
 end
 
@@ -67,7 +71,7 @@ end
 -- Game Loop
 local function gameLoop()
     -- Update background
-    scene.background:move(1,0.5)
+    scene.background:move(1, 0.5)
     for i = #enemies, 1, -1 do
         local enemy = enemies[i]
         enemy:move()
@@ -79,12 +83,19 @@ local function gameLoop()
     end
 
     if kingBayonet then
-        kingBayonet:move()
-  
         if kingBayonet.isDead == true then
-           KingBayonet = nil
-           kingBayonet = nil
-           enemySpawner = timer.performWithDelay( 2500, spawnEnemy, 0 )
+            KingBayonet = nil
+            kingBayonet = nil
+            enemySpawner = timer.performWithDelay( enemySpawnTimer, spawnEnemy, 0 )
+
+            -- Change Music
+            SoundManager:stopAudioChannel(11, true, 500)
+            SoundManager:playSound("ingameOST", 10, 0.7, -1)
+            audio.setVolume( 0.7, {channel = 10} )
+        end
+
+        if kingBayonet then
+            kingBayonet:move()
         end
      end
 end
@@ -123,16 +134,16 @@ function scene:show( event )
         physics.start()
     elseif ( phase == "did" ) then
         -- Create timer to spawn King Bayonet. 2 minutes.
-        kingTimer = timer.performWithDelay( 120000, spawnKingBayonet, 1 )
+        kingTimer = timer.performWithDelay( bayonetSpawnTimer, spawnKingBayonet, 1 )
 
         -- Create timer to spawn Enemy 1. 2,5 seconds.
-        enemySpawner = timer.performWithDelay( 2500, spawnEnemy, 0 )
-
-        -- Add collision listener
-        Runtime:addEventListener("collision", onCollision)
+        enemySpawner = timer.performWithDelay( enemySpawnTimer, spawnEnemy, 0 )
 
         -- Start the game loop
         Runtime:addEventListener("enterFrame", gameLoop)
+
+        -- Play Ingame Music
+        SoundManager:playSound("ingameOST", 10, 0.8, -1)
     end
 end
 
@@ -175,8 +186,8 @@ function scene:hide( event )
         -- Stop the game loop
         Runtime:removeEventListener("enterFrame", gameLoop)
 
-        -- Remove collision listener
-        Runtime:removeEventListener("collision", onCollision)
+        -- Stop Ingame Music
+        SoundManager:stopAudioChannel(10, true, 600)
     elseif ( phase == "did" ) then
     end
 end

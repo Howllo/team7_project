@@ -29,7 +29,19 @@ Projectile = {}
 --
 -- @size - The size of the projectile.
 function Projectile.new(character, firePosition, damage, xForce, yForce, size)
-    if character == nil or firePosition == nil then return end
+    if character == nil or firePosition == nil or firePosition.x == nil or firePosition. y == nil or 
+            character == nil or damage == nil or xForce == nil or yForce == nil or size == nil then
+        print("ERROR: Projectile.new() - Missing parameter.")
+        print("Error Dump Character: " .. tostring(character))
+        print("Error Dump Fire Position: " .. tostring(firePosition))
+        print("Error Dump Fire Position X: " .. tostring(firePosition.x))
+        print("Error Dump Fire Position Y: " .. tostring(firePosition.y))
+        print("Error Dump Damage: " .. tostring(damage))
+        print("Error Dump X Force: " .. tostring(xForce))
+        print("Error Dump Y Force: " .. tostring(yForce))
+        print("Error Dump Size: " .. tostring(size))
+         return 
+    end
 
     local Self = {}
 

@@ -1,3 +1,9 @@
+--***********************************************************************************************
+-- Tony Hardiman, Christian McDonald, Jack Hartwig, Robert Morgan
+-- Team Project
+-- Enemy2.lua
+--***********************************************************************************************
+
 -- Requirements
 local Character = require("src.Characters.Character")
 local display = require("display")

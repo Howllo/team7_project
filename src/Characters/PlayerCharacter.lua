@@ -8,6 +8,7 @@
 local Character = require("src.Characters.Character")
 local Projectile = require("src.Characters.Projectile")
 local PlayerMovementShoot = require("src.Characters.PlayerMovementShoot")
+local SoundManager = require("src.scene.SoundManager")
 local display = require("display")
 local physics = require("physics")
 
@@ -34,12 +35,21 @@ function PlayerCharacter.Spawn()
     function Self.shape:DealDamage(damage)
         if damage == nil then return end
 
+        -- Player Damage Sound
+        SoundManager:playSound("playerDamage", 2, 0.2, 0)
+
+        print("Player took " .. damage .. " damage")
+
         Self.shape.CurrentHealthPoints = Self.shape.CurrentHealthPoints - damage
         Self.shape.GameHUD:UpdateHealthBar()
     end
 
     function Self.shape:Fire()
-        Projectile.new(Self.shape, {x = Self.shape.x + 50, y = Self.shape.y}, Self.Damage, 50, 0, 15)
+        -- Player Shooting Sound
+        SoundManager:playSound("playerShoot", 2, 0.2, 0)
+
+        -- Create projectile
+        Projectile.new(Self.shape, {x = Self.shape.x + 50, y = Self.shape.y}, Self.Damage, 60, 0, 15)
     end
 
     -- Set Game HUD for updating

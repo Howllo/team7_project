@@ -1,3 +1,9 @@
+--***********************************************************************************************
+-- Tony Hardiman, Christian McDonald, Jack Hartwig, Robert Morgan
+-- Team Project
+-- PlayerMovementShoot.lua
+--***********************************************************************************************
+
 --Requirements
 local ColorConversion = require("lib.ColorConversion")
 local display = require("display")
