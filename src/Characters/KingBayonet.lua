@@ -170,27 +170,11 @@ function KingBayonet.new(in_player, gameHUD)
         isShooting = false
     end
 
-    local function PhaseOne()
+    local function Phasing(timing)
         if currentShoots >= maxShoots then
             isReloading = true
             currentShoots = 0
-            timer.performWithDelay( 2000, finishReloading, 1)
-        end
-    end
-
-    local function PhaseTwo()
-        if currentShoots >= maxShoots then
-            isReloading = true
-            currentShoots = 0
-            timer.performWithDelay( 3000, finishReloading, 1)
-        end
-    end
-
-    local function PhaseThree()
-        if currentShoots >= maxShoots then
-            isReloading = true
-            currentShoots = 0
-            timer.performWithDelay( 5000, finishReloading, 1)
+            timer.performWithDelay( timing, finishReloading, 1 )
         end
     end
 
@@ -201,19 +185,19 @@ function KingBayonet.new(in_player, gameHUD)
             maxShoots = 10
             timer.performWithDelay( 300, function ()
                 Self:Fire()
-                PhaseOne()
+                Phasing(2000)
             end, maxShoots)
         elseif Self.shape.phase == 2 then
             maxShoots = 20
             timer.performWithDelay( 100, function ()
                 Self:Fire()
-                PhaseTwo()
+                Phasing(3000)
             end, maxShoots)
         elseif Self.shape.phase == 3 then
             maxShoots = 30
             timer.performWithDelay( 10, function ()
                 Self:Fire()
-                PhaseThree()
+                Phasing(5000)
             end, maxShoots)
         end
     end
