@@ -105,10 +105,8 @@ function scene:create( event )
     self.background = background
 end
 
-
 -- "scene:show()"
 function scene:show( event )
-
     local sceneGroup = self.view
     local phase = event.phase
 
