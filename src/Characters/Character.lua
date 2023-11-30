@@ -34,7 +34,7 @@ function Character.new(shapeObject)
     function Self.shape:DealDamage(damage)
         if Self.shape then
             local SoundManager = require("src.scene.SoundManager")
-            SoundManager:playSound("enemyDamage", 4, 0.4, 0)
+            SoundManager:playSound("enemyDamage", 4, 0.2, 0)
             Self.shape.CurrentHealthPoints = Self.shape.CurrentHealthPoints - damage
         end
     end

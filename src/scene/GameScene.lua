@@ -72,6 +72,7 @@ end
 local function gameLoop()
     -- Update background
     scene.background:move(1, 0.5)
+
     for i = #enemies, 1, -1 do
         local enemy = enemies[i]
         enemy:move()

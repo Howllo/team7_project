@@ -46,7 +46,7 @@ function PlayerCharacter.Spawn()
 
     function Self.shape:Fire()
         -- Player Shooting Sound
-        SoundManager:playSound("playerShoot", 2, 0.2, 0)
+        SoundManager:playSound("playerShoot", 2, 0.05, 0)
 
         -- Create projectile
         Projectile.new(Self.shape, {x = Self.shape.x + 50, y = Self.shape.y}, Self.Damage, 60, 0, 15)
