@@ -39,8 +39,8 @@ function SoundManager:playSound(soundName, channel, soundVolume, loop)
             audio.stop({channel = channel})
         end
 
-        audio.setVolume(soundVolume, {channel = channel}, {loops = loop})
-        audio.play(sound, {channel = channel})
+        audio.setVolume(soundVolume, {channel = channel})
+        audio.play(sound, {channel = channel, loops = loop})
     end
 end
 

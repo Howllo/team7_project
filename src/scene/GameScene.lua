@@ -144,7 +144,7 @@ function scene:show( event )
         Runtime:addEventListener("enterFrame", gameLoop)
 
         -- Play Ingame Music
-        SoundManager:playSound("ingameOST", 10, 0.8, -1)
+        SoundManager:playSound("ingameOST", 10, 0.7, -1)
     end
 end
 
