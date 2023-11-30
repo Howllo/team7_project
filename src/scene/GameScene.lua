@@ -117,7 +117,7 @@ function scene:show( event )
         physics.start()
     elseif ( phase == "did" ) then
         -- Create timer to spawn King Bayonet. 2 minutes.
-        kingTimer = timer.performWithDelay( 2000, spawnKingBayonet, 1 )
+        kingTimer = timer.performWithDelay( 120000, spawnKingBayonet, 1 )
 
         -- Create timer to spawn Enemy 1. 2,5 seconds.
         enemySpawner = timer.performWithDelay( 2500, spawnEnemy, 0 )
