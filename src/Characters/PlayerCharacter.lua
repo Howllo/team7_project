@@ -32,6 +32,8 @@ function PlayerCharacter.Spawn()
     local PlayerMovementShoot = PlayerMovementShoot.new(Self)
 
     function Self.shape:DealDamage(damage)
+        if damage == nil then return end
+
         Self.shape.CurrentHealthPoints = Self.shape.CurrentHealthPoints - damage
         Self.shape.GameHUD:UpdateHealthBar()
     end

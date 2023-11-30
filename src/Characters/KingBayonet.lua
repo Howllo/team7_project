@@ -155,27 +155,34 @@ function KingBayonet.new(in_player, gameHUD)
         local yVelocity = math.sin(math.rad(angle)) * speed
         return xVelocity, yVelocity
     end
-    
+
     function Self:Ability()
+        if Self.shape == nil  then return end
+        if Self.shape.CurrentHealthPoints <= 0 then return end
+
         if Self.shape.phase == 1 then
-            Self:Fire(calVelocity(180, 30))
+            Self:FireNormal()
         elseif Self.shape.phase == 2 then
             Self:Fire(calVelocity(150, 30))
-            Self:Fire(calVelocity(180, 30))
+            Self:FireNormal()
             Self:Fire(calVelocity(210, 30))
         elseif Self.shape.phase == 3 then
-            Self:Fire(calVelocity(150, 15))
-            Self:Fire(calVelocity(180, 15))
+            Self:Fire(calVelocity(150, 15), {x = Self.shape.x - 125, y = Self.shape.y})
+            Self:FireNormal()
             Self:Fire(calVelocity(210, 15))
 
-            timer.performWithDelay( 500, function() 
-                Self:Fire(calVelocity(180, 15))
+            timer.performWithDelay( 500, function()
+                Self:FireNormal()
             end, 1)
         end
     end
 
-    function Self:Fire(xVelocity, yVelocity)
+    function Self:Fire(xVelocity, yVelocity, x, y)
         Projectile.new(Self.shape, {x = Self.shape.x - 100, y = Self.shape.y},Self.Damage, xVelocity, yVelocity, 8)
+    end
+
+    function Self:FireNormal()
+        Projectile.new(Self.shape, {x = Self.shape.x - 125, y = Self.shape.y}, Self.Damage, -50, 0, 8)
     end
 
     return Self
