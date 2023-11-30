@@ -13,6 +13,7 @@ local Enemy2 = require("src.Characters.Enemy2")
 local PlayerCharacter = require("src.Characters.PlayerCharacter")
 local Background = require("src.user_interface.Background")
 local physics = require("physics")
+local SoundManager = require("src.scene.SoundManager")
 local KingBayonet = nil
 
 -- Variables
@@ -37,6 +38,13 @@ local function spawnKingBayonet()
             enemy:destroy()
             table.remove(enemies, i)
         end
+    end
+end
+
+local function onCollision(event)
+    if event.phase == "began" then
+        SoundManager:playCollisionSound()
+        -- Rest of your collision handling code
     end
 end
 
@@ -120,6 +128,9 @@ function scene:show( event )
         -- Create timer to spawn Enemy 1. 2,5 seconds.
         enemySpawner = timer.performWithDelay( 2500, spawnEnemy, 0 )
 
+        -- Add collision listener
+        Runtime:addEventListener("collision", onCollision)
+
         -- Start the game loop
         Runtime:addEventListener("enterFrame", gameLoop)
     end
@@ -163,6 +174,9 @@ function scene:hide( event )
 
         -- Stop the game loop
         Runtime:removeEventListener("enterFrame", gameLoop)
+
+        -- Remove collision listener
+        Runtime:removeEventListener("collision", onCollision)
     elseif ( phase == "did" ) then
     end
 end

@@ -1,9 +1,3 @@
---***********************************************************************************************
--- Tony Hardiman, Christian McDonald, Jack Hartwig, Robert Morgan
--- Team Project
--- Enemy2.lua
---***********************************************************************************************
-
 -- Requirements
 local Character = require("src.Characters.Character")
 local display = require("display")
@@ -14,12 +8,28 @@ local Enemy2 = {}
 
 function Enemy2.new(playerCharacter)
     local Self = Character.new(display.newCircle(0, 0, 15))
+    
+    -- Additional properties for initial direction
+    Self.initialMoveX = 0
+    Self.initialMoveY = 0
 
     function Self:spawn()
         -- Setup
         Self.shape:setFillColor(0, 0, 1)
-        Self.shape.x = display.contentWidth
+
+        -- Modified position: Spawns the enemy off-screen to the right
+        local offScreenOffset = 50 -- This can be adjusted as needed
+        Self.shape.x = display.contentWidth + offScreenOffset
         Self.shape.y = math.random(150, display.contentHeight - 100)
+
+        -- Calculate initial direction based on player's position at spawn time
+        if playerCharacter then
+            local offsetToLeft = 100 -- Adjust as needed
+            local targetX = playerCharacter.x - offsetToLeft
+            local targetY = playerCharacter.y
+            Self.initialMoveX = (targetX - Self.shape.x) * 0.01
+            Self.initialMoveY = (targetY - Self.shape.y) * 0.01
+        end
 
         -- Variables
         Self.shape.MaxHealthPoints = 3
@@ -29,19 +39,14 @@ function Enemy2.new(playerCharacter)
         Self.shape.playerCharacter = playerCharacter
 
         -- Physics
-        physics.addBody( Self.shape, "dyanmic", {isSensor = true} )
+        physics.addBody(Self.shape, "dynamic", {isSensor = true})
         Self.shape.gravityScale = 0
     end
 
     function Self:move()
-        if  Self.shape.playerCharacter and Self.shape then
-            local targetX = Self.shape.playerCharacter.x
-            local targetY = Self.shape.playerCharacter.y
-            local moveX = (targetX - Self.shape.x) * 0.01
-            local moveY = (targetY - Self.shape.y) * 0.01
-            Self.shape.x = Self.shape.x + moveX
-            Self.shape.y = Self.shape.y + moveY
-        end
+        -- Use the initial direction for movement
+        Self.shape.x = Self.shape.x + Self.initialMoveX
+        Self.shape.y = Self.shape.y + Self.initialMoveY
     end
 
     function Self:destroy()
