@@ -1,5 +1,5 @@
 --***********************************************************************************************
--- Tony Hardiman, Christian McDonald, Jack Hartwig, Robert Morgan
+-- Tony Hardiman, Christian McDonald, Jack Hartwig, 
 -- Team Project
 -- start.lua
 --***********************************************************************************************
@@ -34,7 +34,6 @@ function Start.new()
     local t_Credit = display.newText(creditGroup, "Tony Hardiman", display.contentCenterX, display.contentCenterY - 150, native.systemFont, 50)
     local c_Credit = display.newText(creditGroup, "Christian McDonald", display.contentCenterX, display.contentCenterY - 90, native.systemFont, 50)
     local j_Credit = display.newText(creditGroup, "Jack Hartwig", display.contentCenterX, display.contentCenterY - 35, native.systemFont, 50)
-    local r_Credit = display.newText(creditGroup, "Robert Morgan", display.contentCenterX, display.contentCenterY + 20, native.systemFont, 50)
     group:insert(creditGroup)
 
     -- Start Button

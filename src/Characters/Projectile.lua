@@ -1,5 +1,5 @@
 --***********************************************************************************************
--- Tony Hardiman, Christian McDonald, Jack Hartwig, Robert Morgan
+-- Tony Hardiman, Christian McDonald, Jack Hartwig, 
 -- Team Project
 -- Projectile.lua
 --***********************************************************************************************
