@@ -107,7 +107,8 @@ function KingBayonet.new(in_player, gameHUD)
         if Self.shape.player then
             Self.shape.player.shape.BayonetGroup = nil
         end
-        
+
+        KingBayonet.isDead = true
         bayonetGroup:removeSelf()
         display.remove( Self.shape )
         local bayonet = nil
@@ -123,7 +124,6 @@ function KingBayonet.new(in_player, gameHUD)
         Self.shape.ScoreWorth = nil
         Self.shape.BayonetGroup = nil
         Self.shape.player = nil
-        Self.isDead = true
     end
  
     function Self.shape:DealDamage(damage)
