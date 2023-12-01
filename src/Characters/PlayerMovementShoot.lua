@@ -12,15 +12,14 @@ local timer = require("timer")
 -- Module
 PlayerMovementShoot = {}
 
-function PlayerMovementShoot.new(playerCharacter)
+function PlayerMovementShoot.new(playerCharacter, in_scenegroup)
     local Self = {}
 
     -- Variables
     local playerShape = playerCharacter.shape
     local projectileShootTime = nil
-    local group = display.newGroup()
     local touch = 0
-    local playerMovementRect = display.newRoundedRect( group, 30, 360, 150, 450, 30 )
+    local playerMovementRect = display.newRoundedRect( in_scenegroup, 30, 360, 150, 450, 30 )
     playerMovementRect:setFillColor(ColorConversion.HexToNormA("#D3D3D3", 0.7))
 
     -- Cancels Shooting after 300ms

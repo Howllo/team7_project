@@ -113,7 +113,7 @@ function scene:create( event )
     sceneGroup:insert(background)
 
     -- Create Player
-    player = PlayerCharacter.Spawn()
+    player = PlayerCharacter.Spawn(sceneGroup)
 
     -- Create HUD
     HUD = GameHUD.new(player.shape, sceneGroup)

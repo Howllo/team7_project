@@ -15,8 +15,8 @@ local physics = require("physics")
 -- Module
 PlayerCharacter = {}
 
-function PlayerCharacter.Spawn()
-    local Self = Character.new(display.newCircle( 200, display.contentCenterY, 50 ))
+function PlayerCharacter.Spawn(in_scenegroup)
+    local Self = Character.new(display.newCircle( in_scenegroup, 200, display.contentCenterY, 50 ))
 
     -- Variables
     Self.shape.MaxHealthPoints = 5
@@ -30,7 +30,7 @@ function PlayerCharacter.Spawn()
     Self.shape.gravityScale = 0
 
     -- Movement
-    local PlayerMovementShoot = PlayerMovementShoot.new(Self)
+    local PlayerMovementShoot = PlayerMovementShoot.new(Self, in_scenegroup)
 
     function Self.shape:DealDamage(damage)
         if damage == nil then return end
