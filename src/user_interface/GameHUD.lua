@@ -81,6 +81,25 @@ function GameHUD.new(player, in_sceneGroup)
         end
     end
 
+    function Self:Reset()
+        Self.Score = 0
+        
+        if string.len(scoreText.text) >= 12 and textMove == false then
+            scoreText.x = scoreText.x - 50
+            textMove = true
+        elseif string.len(scoreText.text) >= 11 and textMove2 == false then
+            scoreText.x = scoreText.x - 20
+            textMove2 = true
+        end
+        scoreText.text = "Score: " .. Self.Score
+        textMove = false
+        textMove2 = false
+    end
+
+    function Self:SetPlayer(player)
+        Self.Player = player
+    end
+
     return Self
 end
 

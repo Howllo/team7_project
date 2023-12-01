@@ -57,6 +57,14 @@ function PlayerCharacter.Spawn(in_scenegroup)
         Self.shape.GameHUD = in_Hud
     end
 
+    function Self:Reset()
+        Self.shape.CurrentHealthPoints = Self.shape.MaxHealthPoints
+
+        if Self.shape.GameHUD then
+            Self.shape.GameHUD:UpdateHealthBar()
+        end
+    end
+
     return Self
 end
 

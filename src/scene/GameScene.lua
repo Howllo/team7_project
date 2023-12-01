@@ -160,16 +160,14 @@ function scene:hide( event )
         -- Cancel spawner timer.
         timer.cancel(kingTimer)
 
+        -- Cancel spawner timer.
+        timer.cancel(enemySpawner)
+
         -- Destroy King Bayonet
         if kingBayonet then
             kingBayonet:destroy()
             kingBayonet = nil
-        end
-
-        -- Destroy Player
-        if player then
-            player:destroy()
-            player = nil
+            KingBayonet = nil
         end
 
         -- Destroy all enemies
@@ -181,15 +179,22 @@ function scene:hide( event )
             end
         end
 
-        -- Cancel spawner timer.
-        timer.cancel(enemySpawner)
-
         -- Stop the game loop
         Runtime:removeEventListener("enterFrame", gameLoop)
 
         -- Stop Ingame Music
         SoundManager:stopAudioChannel(10, true, 600)
     elseif ( phase == "did" ) then
+
+        -- Reset PlayerCharacter
+        if player then
+            player:Reset()
+        end
+
+        -- Reset HUD
+        if HUD then
+            HUD:Reset()
+        end
     end
 end
 
