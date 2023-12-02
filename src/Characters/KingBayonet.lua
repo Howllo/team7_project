@@ -131,7 +131,7 @@ function KingBayonet.new(in_player, gameHUD)
     function Self:destroy()
         KingBayonet.isDead = true
         
-        transition.to(Self.bayonetGroup, {time = 0, x = display.contentCenterY + 500, y = display.contentCenterY - 100, onComplete= Helper })
+        transition.to(Self.bayonetGroup, {time = 0, x = display.contentCenterY, y = display.contentCenterY, onComplete= Helper })
 
         timer.performWithDelay( 5, function()
             if reloadTimer then

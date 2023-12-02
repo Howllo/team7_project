@@ -13,7 +13,6 @@ local M = {}
 
 -- Variables
 local sheet = bayonet_sheet.GetSheet()
-local bayonetGroup = bayonet_sheet.GetBayonetGroup()
 local isOriginalRotation = true
 local turningDegree = 25
 
@@ -22,7 +21,7 @@ local sequenceData = {
 }
 
 function M.new()
-    local Self = display.newSprite(bayonetGroup, sheet, sequenceData)
+    local Self = display.newSprite(bayonet_sheet.GetBayonetGroup(), sheet, sequenceData)
     Self.x = 15
     Self.y = -47
 

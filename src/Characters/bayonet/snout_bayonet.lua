@@ -21,7 +21,7 @@ local sequenceData = {
 }
 
 function M.new()
-    local Self = display.newSprite(bayonetGroup, sheet, sequenceData)
+    local Self = display.newSprite(bayonet_sheet.GetBayonetGroup(), sheet, sequenceData)
     Self.x = -87
     Self.y = -3
 
