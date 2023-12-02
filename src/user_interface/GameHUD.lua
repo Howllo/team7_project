@@ -44,6 +44,7 @@ function GameHUD.new(player, in_sceneGroup, scene)
         if ( "ended" == event.phase ) then
             SoundManager:stopAudioChannel(3, true, 600)
             SoundManager:stopAudioChannel(11, true, 600)
+            SoundManager:stopAudioChannel(10, true, 600)
             SoundManager:playSound("gameOverUI", 3, 0.4, 0)
 
             background.isVisible = false
@@ -75,8 +76,21 @@ function GameHUD.new(player, in_sceneGroup, scene)
         healthText.text = "Health: " .. Self.Player.CurrentHealthPoints .. "/" .. Self.Player.MaxHealthPoints
         if Self.Player.CurrentHealthPoints <= 0 then
             SoundManager:playSound("gameOver", 4, 0.4, 0)
-            SoundManager:stopAudioChannel(10, true, 500)
+            audio.stop(11)
             SoundManager:playSound("gameOverMenu", 3, 0.7, -1, 500)
+
+            -- Remove Bayonet Healthbar
+            if healthBar then
+                healthBar:removeSelf()
+                healthBar = nil
+            end
+
+            -- Remove Disable Slider
+            if disableSlider then
+                disableSlider:removeEventListener("touch", function(event) return true end)
+                disableSlider:removeSelf()
+                disableSlider = nil
+            end
 
             exitButton:setLabel("GAME OVER")
             exitButton.isVisible = true

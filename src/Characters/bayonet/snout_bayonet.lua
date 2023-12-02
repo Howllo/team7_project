@@ -13,7 +13,6 @@ local M = {}
 
 -- Variables
 local sheet = bayonet_sheet.GetSheet()
-local bayonetGroup = bayonet_sheet.GetBayonetGroup()
 local currentFrame = 1
 local isLightOff = true
 
@@ -21,40 +20,43 @@ local sequenceData = {
     {name="snout", start=2, count=3, loopCount = 0}
 }
 
--- Create Snout
-local snout = display.newSprite(bayonetGroup, sheet , sequenceData )
-snout.x = -87
-snout.y = -3
+function M.new()
+    local Self = display.newSprite(bayonetGroup, sheet, sequenceData)
+    Self.x = -87
+    Self.y = -3
 
--- Sprite placement animation hack.
-function M.frameRate()
-    if isLightOff == true then 
-        if currentFrame == 1 then
-            currentFrame = 2
-            snout:setFrame( currentFrame )
-            snout.x = -88
-            snout.y = -3
-        elseif currentFrame == 2 then
-            currentFrame = 3
-            snout:setFrame( currentFrame )
-            snout.x = -88.1
-            snout.y = -3
-            isLightOff = false
-        end
-    else
-        if currentFrame == 3 then
-            currentFrame = 2
-            snout:setFrame( currentFrame )
-            snout.x = -88
-            snout.y = -3
-        elseif currentFrame == 2 then
-            currentFrame = 1
-            snout:setFrame( currentFrame )
-            snout.x = -87
-            snout.y = -3
-            isLightOff = true
+    -- Sprite placement animation hack.
+    function M.frameRate()
+        if isLightOff == true then 
+            if currentFrame == 1 then
+                currentFrame = 2
+                Self:setFrame( currentFrame )
+                Self.x = -88
+                Self.y = -3
+            elseif currentFrame == 2 then
+                currentFrame = 3
+                Self:setFrame( currentFrame )
+                Self.x = -88.1
+                Self.y = -3
+                isLightOff = false
+            end
+        else
+            if currentFrame == 3 then
+                currentFrame = 2
+                Self:setFrame( currentFrame )
+                Self.x = -88
+                Self.y = -3
+            elseif currentFrame == 2 then
+                currentFrame = 1
+                Self:setFrame( currentFrame )
+                Self.x = -87
+                Self.y = -3
+                isLightOff = true
+            end
         end
     end
+
+    return Self
 end
 
 -- return module

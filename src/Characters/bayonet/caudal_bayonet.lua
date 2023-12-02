@@ -21,40 +21,43 @@ local sequenceData = {
     {name="caudal", start=11, count=3, loopCount = 0}
 }
 
--- Caudal Fin
-M.caudalFin = display.newSprite(bayonetGroup, sheet, sequenceData)
-M.caudalFin.x = 97.5
-M.caudalFin.y = -10.5
+function M.new()
+    local Self = display.newSprite(bayonetGroup, sheet, sequenceData)
+    Self.x = 97.5
+    Self.y = -10.5
 
--- Sprite placement animation hack.
-function M.frameRate()
-    if isTailOpen == true then 
-        if currentFrame == 1 then
-            currentFrame = 2
-            M.caudalFin:setFrame( currentFrame )
-            M.caudalFin.x = 104.4
-            M.caudalFin.y = -10.5
-        elseif currentFrame == 2 then
-            currentFrame = 3
-            M.caudalFin:setFrame( currentFrame )
-            M.caudalFin.x = 109.5
-            M.caudalFin.y = -10.5
-            isTailOpen = false
-        end
-    else
-        if currentFrame == 3 then
-            currentFrame = 2
-            M.caudalFin:setFrame( currentFrame )
-            M.caudalFin.x = 104.4
-            M.caudalFin.y = -10.5
-        elseif currentFrame == 2 then
-            currentFrame = 1
-            M.caudalFin:setFrame( currentFrame )
-            M.caudalFin.x = 97.5
-            M.caudalFin.y = -10.5
-            isTailOpen = true
+    -- Sprite placement animation hack.
+    function Self.frameRate()
+        if isTailOpen == true then 
+            if currentFrame == 1 then
+                currentFrame = 2
+                Self:setFrame( currentFrame )
+                Self.x = 104.4
+                Self.y = -10.5
+            elseif currentFrame == 2 then
+                currentFrame = 3
+                Self:setFrame( currentFrame )
+                Self.x = 109.5
+                Self.y = -10.5
+                isTailOpen = false
+            end
+        else
+            if currentFrame == 3 then
+                currentFrame = 2
+                Self:setFrame( currentFrame )
+                Self.x = 104.4
+                Self.y = -10.5
+            elseif currentFrame == 2 then
+                currentFrame = 1
+                Self:setFrame( currentFrame )
+                Self.x = 97.5
+                Self.y = -10.5
+                isTailOpen = true
+            end
         end
     end
+
+    return Self
 end
 
 -- return module

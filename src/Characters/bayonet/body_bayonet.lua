@@ -16,10 +16,14 @@ local sequenceData = {
     {name="body", start=1, count=1, loopCount = 0}
 }
 
---Create Body
-M.body = display.newSprite(bayonet_sheet.GetBayonetGroup(), bayonet_sheet.GetSheet() , sequenceData )
-M.body.x = 0
-M.body.y = 0
+function M.new()
+    local Self = display.newSprite(bayonet_sheet.GetBayonetGroup(), bayonet_sheet.GetSheet() , sequenceData )
+ 
+    Self.x = 0
+    Self.y = 0
+
+    return Self
+end
 
 -- return module
 return M

@@ -30,13 +30,15 @@ KingBayonet = {}
 function KingBayonet.new(in_player, gameHUD)
     local Self = Character.new(display.newRect( 0, 0, 200, 100 ))
 
+    -- Create Group
+    Self.bayonetGroup = bayonet.GetBayonetGroup()
+
     -- Variables
     Self.shape:setFillColor( 1, 1, 1, 0.01 )
     Self.shape.MaxHealthPoints = 30
     Self.shape.CurrentHealthPoints = 30
     Self.shape.tag = "Enemy"
     Self.shape.ScoreWorth = 10000
-    Self.shape.BayonetGroup = bayonet.GetBayonetGroup()
     Self.shape.player = in_player
     Self.isDead = false
     Self.gameHUD = gameHUD
@@ -49,8 +51,19 @@ function KingBayonet.new(in_player, gameHUD)
     local isShooting = false
     local maxShoots = 0
     local currentShoots = 0
+    local reloadTimer = nil
+    local shootTimer = nil
+
+    -- Create Body Part
+    local bodyM = nil
+    local dorsalM = nil
+    local snoutM = nil
+    local pectoralM = nil
+    local caudalM = nil
+    local mouthM = nil
     
    function Self:spawn()
+        -- Requirements
         mouth = require("src.Characters.bayonet.mouth_bayonet")
         caudal = require("src.Characters.bayonet.caudal_bayonet")
         pectoral = require("src.Characters.bayonet.pectoral_bayonet")
@@ -58,9 +71,17 @@ function KingBayonet.new(in_player, gameHUD)
         dorsal = require("src.Characters.bayonet.dorsal_bayonet")
         body = require("src.Characters.bayonet.body_bayonet")
 
+        -- Create Body Parts
+        bodyM = body.new()
+        dorsalM = dorsal.new()
+        snoutM = snout.new()
+        pectoralM = pectoral.new()
+        caudalM = caudal.new()
+        mouthM = mouth.new()
+        
         -- Set Collision
-        Self.shape.x = body.body.x + 10
-        Self.shape.y = body.body.y - 10
+        Self.shape.x = bodyM.x + 10
+        Self.shape.y = bodyM.y - 10
 
         -- Physics Two
         physics.addBody( Self.shape, "kinematic", {isSensor = false, categoryBits = 2, maskBits = 3} )
@@ -77,53 +98,82 @@ function KingBayonet.new(in_player, gameHUD)
     end 
 
     function Self:move()
+        if Self.isDead == true or Self.shape == nil then return end
+
         if transitionFinish then 
             transitionFinish = false
             local timingMin = 0
             local timingMax = 0
 
             -- Three Different Phases
-            if (Self.shape.CurrentHealthPoints/ 30) * 100 > 50 then
-                timingMin = 1200
-                timingMax = 1500
-                Self.shape.phase = 1
-            elseif (Self.shape.CurrentHealthPoints/ 30) * 100 > 10 and (Self.shape.CurrentHealthPoints/ 30) * 100 <= 50 then
-                timingMin = 600
-                timingMax = 800
-                Self.shape.phase = 2
-            elseif (Self.shape.CurrentHealthPoints/ 30) * 100 <= 10 then
-                timingMin = 400
-                timingMax = 600
-                Self.shape.phase = 3
+            if Self.shape.CurrentHealthPoints then
+                if (Self.shape.CurrentHealthPoints/ 30) * 100 > 50 then
+                    timingMin = 1200
+                    timingMax = 1500
+                    Self.shape.phase = 1
+                elseif (Self.shape.CurrentHealthPoints/ 30) * 100 > 15 and (Self.shape.CurrentHealthPoints/ 30) * 100 <= 50 then
+                    timingMin = 600
+                    timingMax = 800
+                    Self.shape.phase = 2
+                elseif (Self.shape.CurrentHealthPoints/ 30) * 100 <= 15 then
+                    timingMin = 400
+                    timingMax = 600
+                    Self.shape.phase = 3
+                end
             end
 
             local locX = math.random(275, 1050)
             local locY = math.random(200, 610)
-            transition.to(bayonetGroup, {time = math.random(timingMin, timingMax), x = locX, y = locY, onComplete= Helper })
+            transition.to(Self.bayonetGroup, {time = math.random(timingMin, timingMax), x = locX, y = locY, onComplete= Helper })
         end
     end
  
     function Self:destroy()
-        if Self.shape.player then
-            Self.shape.player.shape.BayonetGroup = nil
-        end
-
         KingBayonet.isDead = true
-        bayonetGroup:removeSelf()
-        display.remove( Self.shape )
-        local bayonet = nil
-        local mouth = nil
-        local caudal = nil
-        local pectoral = nil
-        local snout = nil
-        local dorsal = nil
-        local body = nil
-        Self.shape.MaxHealthPoints = nil
-        Self.shape.CurrentHealthPoints = nil
-        Self.shape.tag = nil
-        Self.shape.ScoreWorth = nil
-        Self.shape.BayonetGroup = nil
-        Self.shape.player = nil
+        
+        transition.to(Self.bayonetGroup, {time = 0, x = display.contentCenterY + 500, y = display.contentCenterY - 100, onComplete= Helper })
+
+        timer.performWithDelay( 5, function()
+            if reloadTimer then
+                timer.cancel(reloadTimer)
+            end
+    
+            if shootTimer then
+                timer.cancel(shootTimer)
+            end
+            
+            if bodyM then
+                bodyM:removeSelf()
+                bodyM = nil
+            end
+    
+            if dorsalM then
+                dorsalM:removeSelf()
+                dorsalM = nil
+            end
+    
+            if snoutM then
+                snoutM:removeSelf()
+                snoutM = nil
+            end
+    
+            if pectoralM then
+                pectoralM:removeSelf()
+                pectoralM = nil
+            end
+    
+            if caudalM then
+                caudalM:removeSelf()
+                caudalM = nil
+            end
+    
+            if mouthM then
+                mouthM:removeSelf()
+                mouthM = nil
+            end
+
+            Self.shape:removeSelf()
+        end, 1)
     end
  
     function Self.shape:DealDamage(damage)
@@ -157,9 +207,9 @@ function KingBayonet.new(in_player, gameHUD)
 
     -- Update function
     local function update()
-        if Self.shape then
-            Self.shape.x = bayonetGroup.x
-            Self.shape.y = bayonetGroup.y
+        if Self.shape and Self.bayonetGroup then
+            Self.shape.x = Self.bayonetGroup.x
+            Self.shape.y = Self.bayonetGroup.y
         end
     end
     timer.performWithDelay( 20, update, 0)
@@ -171,10 +221,11 @@ function KingBayonet.new(in_player, gameHUD)
     end
 
     local function Phasing(timing)
+        if Self.isDead == true or Self.shape == nil then return end
         if currentShoots >= maxShoots then
             isReloading = true
             currentShoots = 0
-            timer.performWithDelay( timing, finishReloading, 1 )
+            reloadTimer = timer.performWithDelay( timing, finishReloading, 1 )
         end
     end
 
@@ -183,19 +234,19 @@ function KingBayonet.new(in_player, gameHUD)
 
         if Self.shape.phase == 1 then
             maxShoots = 10
-            timer.performWithDelay( 300, function ()
+            shootTimer = timer.performWithDelay( 300, function ()
                 Self:Fire()
                 Phasing(2000)
             end, maxShoots)
         elseif Self.shape.phase == 2 then
             maxShoots = 20
-            timer.performWithDelay( 100, function ()
+            shootTimer = timer.performWithDelay( 100, function ()
                 Self:Fire()
                 Phasing(3000)
             end, maxShoots)
         elseif Self.shape.phase == 3 then
             maxShoots = 30
-            timer.performWithDelay( 10, function ()
+            shootTimer = timer.performWithDelay( 10, function ()
                 Self:Fire()
                 Phasing(5000)
             end, maxShoots)

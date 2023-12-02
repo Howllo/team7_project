@@ -37,22 +37,18 @@ local opt =
 local sheet = graphics.newImageSheet( "data/KingBayonet.png", opt );
 
 -- Create Group
-bayonetGroup = display.newGroup()
-
--- Set bayonet position to middle.
-bayonetGroup.x = display.contentWidth / 2
-bayonetGroup.y = display.contentHeight / 2
+BayonetGroup = display.newGroup()
 
 -- Create last X and Y positon variables.
-local lastX = bayonetGroup.x;
-local lastY = bayonetGroup.y;
+local lastX = nil;
+local lastY = nil
 
 function M.GetSheet()
     return sheet
 end
 
 function M.GetBayonetGroup()
-    return bayonetGroup
+    return BayonetGroup
 end
 
 -- Get the last transition position of the bayonet on X axis.
