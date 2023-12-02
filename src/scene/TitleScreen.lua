@@ -48,7 +48,8 @@ function scene:show( event )
    if ( phase == "will" ) then
 
       -- Play Packground Music
-      SoundManager:playSound("mainMenuOST", 3, 0.8, -1)
+      SoundManager:stopAudioChannel(3, true, 600)
+      SoundManager:playSound("mainMenuOST", 3, 1, -1)
 
       -- Start the game loop
       Runtime:addEventListener("enterFrame", gameLoop)

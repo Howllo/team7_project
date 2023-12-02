@@ -24,6 +24,7 @@ local kingBayonet = nil
 local kingTimer = nil
 local enemies = {}
 local enemySpawner = nil
+local gameOver = false
 
 -- Enemy Controls
 local enemySpawnTimer = 2500
@@ -31,6 +32,8 @@ local bayonetSpawnTimer = 120000
 
 -- Spawn King Bayonet
 local function spawnKingBayonet()
+    if gameOver then return end
+
     KingBayonet = require("src.Characters.KingBayonet")
     kingBayonet = KingBayonet.new(player,  HUD)
     kingBayonet:spawn()
@@ -54,7 +57,7 @@ end
 
 -- Spawn Enemy
 local function spawnEnemy()
-    if player == nil or KingBayonet then timer.cancel(enemySpawner) return end
+    if player == nil or KingBayonet or gameOver then timer.cancel(enemySpawner) return end
 
     local randomEnemy = math.random(1, 2)
     if randomEnemy == 1 then
@@ -70,6 +73,36 @@ end
 
 -- Game Loop
 local function gameLoop()
+    -- Game Over
+    if player then
+        if player.shape.CurrentHealthPoints <= 0 then
+            gameOver = true
+
+            -- Destroy Player
+            player:destroy()
+            player = nil
+        
+            -- Destroy King Bayonet
+            if kingBayonet then
+                kingBayonet:destroy()
+                kingBayonet = nil
+                KingBayonet = nil
+            end
+
+            -- Destroy all enemies
+            if #enemies > 0 then
+                for i = #enemies, 1, -1 do
+                    local enemy = enemies[i]
+                    enemy:destroy()
+                    table.remove(enemies, i)
+                end
+            end
+
+            -- Stop from progressing
+            return
+        end
+     end
+
     -- Update background
     scene.background:move(1, 0.5)
 
@@ -133,7 +166,28 @@ function scene:show( event )
     if ( phase == "will" ) then
         -- Physics
         physics.start()
+
+        -- Reset Game Over
+        if HUD then
+            HUD:GetGameOverButton().isVisible = false
+        end
     elseif ( phase == "did" ) then
+
+        -- Create Player
+        if player == nil then
+            player = PlayerCharacter.Spawn(sceneGroup)
+
+            if HUD == nil then
+                HUD = GameHUD.new(player.shape, sceneGroup)
+            else 
+                HUD:SetPlayer(player.shape)
+                HUD:Reset()
+            end
+
+            -- Set HUD for player
+            player:SetHUD(HUD)
+        end
+
         -- Create timer to spawn King Bayonet. 2 minutes.
         kingTimer = timer.performWithDelay( bayonetSpawnTimer, spawnKingBayonet, 1 )
 
@@ -162,6 +216,16 @@ function scene:hide( event )
 
         -- Cancel spawner timer.
         timer.cancel(enemySpawner)
+
+        -- Destroy Player
+        if player then
+            if HUD then
+                HUD:SetPlayer(nil)
+            end
+
+            player:destroy()
+            player = nil
+        end
 
         -- Destroy King Bayonet
         if kingBayonet then

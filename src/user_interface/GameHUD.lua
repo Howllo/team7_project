@@ -3,11 +3,14 @@ local display = require("display")
 local native = require("native")
 local widget = require("widget")
 local ColorConversion = require("lib.ColorConversion")
+local ColConv = require("lib.ColorConversion")
+local composer = require("composer")
+local SoundManager = require("src.scene.SoundManager")
 
 -- Module
 GameHUD = {}
 
-function GameHUD.new(player, in_sceneGroup)
+function GameHUD.new(player, in_sceneGroup, scene)
     local Self = {}
     
     -- Variables
@@ -32,8 +35,41 @@ function GameHUD.new(player, in_sceneGroup)
     local healthBar = nil
     local disableSlider = nil
 
+    local function HandleButtonEvent(event)
+        if ( "ended" == event.phase ) then
+            SoundManager:playSound("gameOverUI", 3, 0.4, 0)
+            composer.gotoScene("src.scene.TitleScreen", {effect = "fade", time = 1000})
+        end
+    end
+
+    --exit/main menu button
+    local exitButton = widget.newButton(
+        {
+            label = "GAME OVER",
+            emboss = false,
+            shape = "roundedRect",
+            x = display.contentCenterX,
+            y = display.contentCenterY,
+            width = 225,
+            height = 100,
+            cornerRadius = 15,
+            fontSize = 30,
+            fillColor = { default={ ColConv.HexToNormAlpha("#FFFFFF")}, over={ ColConv.HexToNormAlpha("#57828F") } },
+            onEvent = HandleButtonEvent
+        }
+    )
+    sceneGroup:insert(exitButton)
+    exitButton.isVisible = false
+
     function Self:UpdateHealthBar()
         healthText.text = "Health: " .. Self.Player.CurrentHealthPoints .. "/" .. Self.Player.MaxHealthPoints
+        if Self.Player.CurrentHealthPoints <= 0 then
+            SoundManager:playSound("gameOver", 4, 0.4, 0)
+            SoundManager:stopAudioChannel(10, true, 500)
+
+            exitButton:setLabel("GAME OVER")
+            exitButton.isVisible = true
+        end
     end
 
     function Self:UpdateScore(newScore)
@@ -75,6 +111,11 @@ function GameHUD.new(player, in_sceneGroup)
                 disableSlider:removeEventListener("touch", function(event) return true end)
                 disableSlider:removeSelf()
                 disableSlider = nil
+                
+                -- Exit Button
+                exitButton:setLabel("CONGRATS")
+                exitButton.isVisible = true
+
                 return
             end
             healthBar:setValue( (health / 30) * 100 )
@@ -98,6 +139,10 @@ function GameHUD.new(player, in_sceneGroup)
 
     function Self:SetPlayer(player)
         Self.Player = player
+    end
+
+    function Self:GetGameOverButton()
+        return exitButton
     end
 
     return Self
