@@ -173,6 +173,9 @@ function scene:show( event )
         end
     elseif ( phase == "did" ) then
 
+        -- Reset Game Over
+        gameOver = false
+
         -- Create Player
         if player == nil then
             player = PlayerCharacter.Spawn(sceneGroup)
@@ -248,6 +251,11 @@ function scene:hide( event )
 
         -- Stop Ingame Music
         SoundManager:stopAudioChannel(10, true, 600)
+
+        -- Reset UI
+        if HUD then
+            HUD:Reset()
+        end
     elseif ( phase == "did" ) then
 
         -- Reset PlayerCharacter

@@ -31,13 +31,23 @@ function GameHUD.new(player, in_sceneGroup, scene)
     -- Score Text
     local scoreText = display.newText(sceneGroup, "Score: " .. Self.Score, 40, 35, native.systemFont, 40)
 
+    -- Background
+    local background = display.newRect(sceneGroup, display.contentCenterX, 30, 2000, 2000)
+    background:setFillColor(0, 0, 0, 0.3)
+    background.isVisible = false
+
     -- King Bayonet Health Bar
     local healthBar = nil
     local disableSlider = nil
 
     local function HandleButtonEvent(event)
         if ( "ended" == event.phase ) then
+            SoundManager:stopAudioChannel(3, true, 600)
+            SoundManager:stopAudioChannel(11, true, 600)
             SoundManager:playSound("gameOverUI", 3, 0.4, 0)
+
+            background.isVisible = false
+
             composer.gotoScene("src.scene.TitleScreen", {effect = "fade", time = 1000})
         end
     end
@@ -66,9 +76,11 @@ function GameHUD.new(player, in_sceneGroup, scene)
         if Self.Player.CurrentHealthPoints <= 0 then
             SoundManager:playSound("gameOver", 4, 0.4, 0)
             SoundManager:stopAudioChannel(10, true, 500)
+            SoundManager:playSound("gameOverMenu", 3, 0.7, -1, 500)
 
             exitButton:setLabel("GAME OVER")
             exitButton.isVisible = true
+            background.isVisible = true
         end
     end
 
@@ -124,6 +136,8 @@ function GameHUD.new(player, in_sceneGroup, scene)
 
     function Self:Reset()
         Self.Score = 0
+        scoreText.text = "Score: " .. Self.Score
+        healthText.text = "Health: " .. 5 .. "/" .. 5
         
         if string.len(scoreText.text) >= 12 and textMove == false then
             scoreText.x = scoreText.x - 50

@@ -45,6 +45,10 @@ function PlayerMovementShoot.new(playerCharacter, in_scenegroup)
         end
     end
 
+    function Self:destroy()
+        playerMovementRect:removeSelf()
+    end
+
     -- Event For Movement
     playerMovementRect:addEventListener("touch", MovementHandler)
 

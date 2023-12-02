@@ -36,7 +36,7 @@ function PlayerCharacter.Spawn(in_scenegroup)
         if damage == nil then return end
 
         -- Player Damage Sound
-        SoundManager:playSound("playerDamage", 2, 0.2, 0)
+        SoundManager:playSound("playerDamage", 2, 0.3, 0)
 
         print("Player took " .. damage .. " damage")
 
@@ -55,6 +55,13 @@ function PlayerCharacter.Spawn(in_scenegroup)
     -- Set Game HUD for updating
     function Self:SetHUD(in_Hud)
         Self.shape.GameHUD = in_Hud
+    end
+
+    function Self:destroy()
+        Self.shape:removeSelf()
+        Self.shape = nil
+        PlayerMovementShoot:destroy()
+        PlayerMovementShoot = nil
     end
 
     function Self:Reset()

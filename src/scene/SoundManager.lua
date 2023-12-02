@@ -16,6 +16,7 @@ SoundManager.sounds = {
     bayonetDamage = audio.loadSound("data/sound/sfx/BayonetDamage.wav"),
     bayonetOST = audio.loadSound("data/sound/music/BayonetMusic.wav"),
     enemyDamage = audio.loadSound("data/sound/sfx/EnemyDamage.wav"),
+    gameOverMenu = audio.loadSound("data/sound/music/GameOverMenu.wav"),
  }
 
 -- Function to play collision sound
