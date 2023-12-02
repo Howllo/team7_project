@@ -28,7 +28,7 @@ local gameOver = false
 
 -- Enemy Controls
 local enemySpawnTimer = 2500
-local bayonetSpawnTimer = 1000
+local bayonetSpawnTimer = 120000
 
 -- Spawn King Bayonet
 local function spawnKingBayonet()
